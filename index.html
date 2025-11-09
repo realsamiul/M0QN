@@ -1,0 +1,1948 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contour Sphere Visualization</title>
+    <style>
+        @import url("https://fonts.cdnfonts.com/css/thegoodmonolith");
+        @import url("https://fonts.cdnfonts.com/css/pp-neue-montreal");
+        @import url("https://fonts.googleapis.com/css2?family=Boldonse&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+        :root {
+            /* Colors */
+            --color-primary: #0a0a0a;
+            --color-secondary: #161616;
+            --color-accent: #ff2c2c;
+            --color-text: #f5f5f5;
+            --color-text-muted: rgba(245, 245, 245, 0.7);
+            --color-border: rgba(255, 255, 255, 0.05);
+            --color-overlay: rgba(0, 0, 0, 0.5);
+            /* Typography */
+            --font-primary: "Inter", sans-serif;
+            --font-display: "Boldonse", serif;
+            --font-serif: "EB Garamond", serif;
+            --text-xs: 0.7rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.2rem;
+            --text-xl: 1.5rem;
+            --text-2xl: 2rem;
+            --text-3xl: 3rem;
+            --text-mega: clamp(7rem, 15vw, 12rem);
+            /* Preloader/Menu Colors */
+            --color-text-preloader: #fff;
+            --color-bg-preloader: #fff;
+            --color-overlay-preloader: #000;
+            --color-overlay-text-preloader: #fff;
+            --grid-padding: 2rem;
+            --grid-gap: 1rem;
+            --transition-timing: cubic-bezier(0.65, 0.05, 0.36, 1);
+            --transition-duration: 640ms;
+            --font-primary-preloader: "PP Neue Montreal", sans-serif;
+            --font-secondary-preloader: "TheGoodMonolith", monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            overflow-x: hidden;
+            font-family: var(--font-primary);
+            background-color: var(--color-primary);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* Modern Preloader Styles */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--color-overlay-preloader);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .terminal-preloader {
+            width: 90%;
+            max-width: 800px;
+            height: auto;
+            max-height: 500px;
+            padding: 1rem 0;
+            position: relative;
+            overflow: hidden;
+            display: block;
+            opacity: 1;
+        }
+
+        .terminal-container {
+            position: relative;
+            height: 350px;
+            margin-top: 30px;
+            overflow: hidden;
+            padding: 10px;
+        }
+
+        .terminal-line {
+            position: absolute;
+            font-size: 0.9rem;
+            line-height: 1.2;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 100%;
+            left: 0;
+            padding-left: 10px;
+            text-indent: 0;
+            margin-left: 0;
+            opacity: 1;
+            font-family: var(--font-primary-preloader);
+            font-weight: 300;
+        }
+
+        .terminal-line .highlight,
+        .terminal-line .faded {
+            display: inline-block;
+            padding-left: 0;
+            margin-left: 0;
+            text-indent: 0;
+        }
+
+        .terminal-line span {
+            padding-left: 0;
+            margin-left: 0;
+            text-indent: 0;
+            font-family: var(--font-primary-preloader);
+        }
+
+        .highlight {
+            color: #fff;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .faded {
+            opacity: 0.5;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .border-top,
+        .border-bottom {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            font-size: 0.75rem;
+            color: #fff;
+            align-items: center;
+            font-family: var(--font-secondary-preloader);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .border-top {
+            top: 0;
+        }
+
+        .border-bottom {
+            bottom: 0;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 135px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            margin-left: 0;
+            text-indent: 0;
+        }
+
+        .progress-label {
+            font-weight: 400;
+            margin-right: 10px;
+            font-size: 0.9rem;
+            padding-left: 0;
+            margin-left: 0;
+            text-indent: 0;
+            color: #fff;
+            font-family: var(--font-primary-preloader);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .progress-container {
+            width: 200px;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #fff;
+            transition: none;
+        }
+
+        /* Grid System */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: var(--grid-gap);
+            width: 100%;
+        }
+
+        /* Header Styles */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .primary-nav {
+            pointer-events: all;
+            padding: var(--grid-padding);
+            width: 100%;
+        }
+
+        .brand {
+            grid-column: 1 / span 6;
+        }
+
+        .brand a {
+            font-size: 1.75rem;
+            font-weight: 400;
+            color: white;
+        }
+
+        .menu-toggle {
+            grid-column: 12 / span 1;
+            text-align: right;
+        }
+
+        /* Overlay Menu */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--color-overlay-preloader);
+            clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .overlay-header {
+            padding: var(--grid-padding);
+            width: 100%;
+            position: relative;
+            z-index: 30;
+        }
+
+        .overlay-brand {
+            grid-column: 1 / span 6;
+        }
+
+        .overlay-brand a {
+            font-size: 1.75rem;
+            font-weight: 400;
+        }
+
+        .close-toggle {
+            grid-column: 12 / span 1;
+            text-align: right;
+        }
+
+        .overlay a,
+        .overlay p {
+            color: var(--color-overlay-text-preloader);
+        }
+
+        .text-reveal {
+            overflow: hidden;
+            position: relative;
+            display: inline-block;
+        }
+
+        .brand .text-reveal,
+        .menu-toggle .text-reveal,
+        .overlay-brand .text-reveal,
+        .close-toggle .text-reveal {
+            cursor: pointer;
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            padding: 15vh var(--grid-padding) 1rem;
+            position: relative;
+            z-index: 30;
+        }
+
+        .nav-menu-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            align-items: flex-start;
+        }
+
+        .nav-item {
+            margin-bottom: 0.25rem;
+            text-align: left;
+        }
+
+        .nav-link {
+            font-size: 3rem;
+            line-height: 1.2;
+            display: inline-block;
+            position: relative;
+            padding-right: 2em;
+            text-align: left;
+        }
+
+        /* New SplitText styles */
+        .shift-effect {
+            position: relative;
+        }
+
+        .shift-effect:before {
+            content: "■";
+            font-size: 0.25em;
+            position: absolute;
+            left: -4em;
+            top: 50%;
+            color: inherit;
+            transform: translateY(-50%) rotate(0deg);
+            transform-origin: center;
+            opacity: 0;
+            transition: transform 0.6s var(--transition-timing),
+                opacity 0.4s var(--transition-timing), left 0.6s var(--transition-timing);
+        }
+
+        .shift-effect:hover:before {
+            opacity: 1;
+            transform: translateY(-50%) rotate(1080deg);
+            left: 0.5em;
+        }
+
+        /* Character-based animation styles */
+        .char {
+            display: inline-block;
+            transform-origin: center;
+        }
+
+        /* Footer */
+        .overlay-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: var(--grid-padding);
+            z-index: 30;
+        }
+
+        .copyright {
+            grid-column: 1 / span 6;
+        }
+
+        .social-links {
+            grid-column: 7 / span 6;
+            display: flex;
+            justify-content: flex-end;
+            gap: 2rem;
+        }
+
+        /* Featured Image */
+        .featured-image {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background-image: url("https://assets.codepen.io/7558/bw-spheres-002.jpg");
+            background-size: cover;
+            background-position: center;
+            clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+            z-index: 25;
+            opacity: 0.9;
+        }
+
+        /* Background Image */
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url("https://assets.codepen.io/7558/bw-spheres-001.jpg");
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+        }
+
+        /* Scroll Text */
+        .scroll-text {
+            position: fixed;
+            bottom: 2rem;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 5;
+            color: white;
+            font-size: 1rem;
+        }
+
+        /* Quote Section */
+        .quote-section {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            z-index: 5;
+            color: white;
+            max-width: 640px;
+        }
+
+        .quote-section h2 {
+            font-size: 3rem;
+            line-height: 1;
+            font-weight: 400;
+        }
+
+        /* Title line animation */
+        .title-line {
+            display: block;
+            overflow: hidden;
+        }
+
+        .title-line span {
+            display: inline-block;
+            transform: translateY(100%);
+        }
+
+        @media (max-width: 900px) {
+            .nav-link {
+                font-size: 2rem;
+            }
+
+            .featured-image {
+                width: 100%;
+                opacity: 0.3;
+            }
+
+            .quote-section {
+                max-width: 300px;
+            }
+
+            .quote-section h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Initially hide the content while preloader is active */
+        .content-container {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Contour Sphere Canvas */
+        .canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .webgl {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Content sections */
+        .content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .section-inner {
+            max-width: 800px;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .title {
+            font-family: var(--font-display);
+            font-size: var(--text-mega);
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            color: var(--color-text);
+        }
+
+        .description {
+            font-size: var(--text-lg);
+            color: var(--color-text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .section {
+                padding: 1rem;
+            }
+            
+            .section-inner {
+                padding: 1rem;
+            }
+            
+            .title {
+                font-size: clamp(3rem, 10vw, 6rem);
+            }
+            
+            .description {
+                font-size: var(--text-base);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="terminal-preloader">
+            <div class="border-top">
+                <span>Dimensional Gateway</span>
+                <span>Traversal Initiated</span>
+            </div>
+
+            <div class="terminal-container">
+                <!-- First block of text - before progress bar -->
+                <div class="terminal-line" style="top: 0px;">
+                    <span class="faded" data-scramble="true">Dimensional Coordinates: Alpha/Omega/Prime</span>
+                    <span class="highlight" data-scramble="true">Coordinates Locked</span>
+                </div>
+
+                <div class="terminal-line" style="top: 30px;">
+                    <span class="faded" data-scramble="true">Initiate Quantum Calibration</span>
+                    <span class="highlight" data-scramble="true">Singularity Detected</span>
+                </div>
+
+                <div class="terminal-line" style="top: 60px;">
+                    <span class="highlight" data-scramble="true">Beginning Tesseract Unfolding</span>
+                </div>
+
+                <div class="terminal-line" style="top: 90px;">
+                    <span class="highlight" data-scramble="true">Hyperdimensional Matrices Aligned</span>
+                </div>
+
+                <!-- Progress bar with additional text -->
+                <div class="progress-line">
+                    <span class="progress-label">Traversing</span>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                    <span class="highlight" style="margin-left: 10px;" data-scramble="true">Dimensional Shift</span>
+                </div>
+
+                <!-- Second block of text - after progress bar -->
+                <div class="terminal-line" style="top: 165px;">
+                    <span class="highlight" data-scramble="true">Quantum Entanglement Stabilized</span>
+                </div>
+
+                <div class="terminal-line" style="top: 195px;">
+                    <span class="highlight" data-scramble="true">Cosmic Strings Vibrating in Harmony</span>
+                </div>
+
+                <div class="terminal-line" style="top: 225px;">
+                    <span class="highlight" data-scramble="true">Wormhole Aperture Expanding</span>
+                </div>
+
+                <div class="terminal-line" style="top: 255px;">
+                    <span class="highlight" data-scramble="true">Dimensional Gateway Stabilizing</span>
+                </div>
+
+                <div class="terminal-line" style="top: 285px;">
+                    <span class="highlight" data-scramble="true">Reality Parameters Reconfigured</span>
+                </div>
+
+                <!-- Background faded lines -->
+                <div class="terminal-line" style="top: 15px;">
+                    <span class="faded" data-scramble="true">Quantum Fluctuation Nominal</span>
+                </div>
+
+                <div class="terminal-line" style="top: 45px;">
+                    <span class="faded" data-scramble="true">Initiating Spacetime Fold</span>
+                </div>
+
+                <div class="terminal-line" style="top: 75px;">
+                    <span class="faded" data-scramble="true">Scanning Parallel Realities</span>
+                </div>
+
+                <div class="terminal-line" style="top: 105px;">
+                    <span class="faded" data-scramble="true">Analyzing Dark Matter Density</span>
+                </div>
+
+                <div class="terminal-line" style="top: 180px;">
+                    <span class="faded" data-scramble="true">Processing Gravitational Waves</span>
+                </div>
+
+                <div class="terminal-line" style="top: 210px;">
+                    <span class="faded" data-scramble="true">Calibrating Temporal Displacement</span>
+                </div>
+
+                <div class="terminal-line" style="top: 240px;">
+                    <span class="faded" data-scramble="true">Evaluating Dimensional Resonance</span>
+                </div>
+
+                <div class="terminal-line" style="top: 270px;">
+                    <span class="faded" data-scramble="true">Stabilizing Quantum Foam</span>
+                </div>
+            </div>
+
+            <div class="border-bottom">
+                <span>Traversal Sequence Complete</span>
+                <span>Dimensional Gateway Open</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="background-image"></div>
+    <div class="quote-section">
+        <h2>
+            <span class="title-line"><span>Creativity transcends space</span></span>
+            <span class="title-line"><span>weaving quantum threads</span></span>
+            <span class="title-line"><span>into new realities</span></span>
+            <span class="title-line"><span>beyond dimensions.</span></span>
+        </h2>
+    </div>
+
+    <div class="scroll-text">Scroll</div>
+
+    <!-- Main Content -->
+    <div class="content-container" id="content">
+        <header class="site-header">
+            <nav class="primary-nav">
+                <div class="grid">
+                    <div class="brand">
+                        <div class="text-reveal">
+                            <a href="#">Summer Days Studio</a>
+                        </div>
+                    </div>
+                    <div class="menu-toggle">
+                        <div class="text-reveal">
+                            <p id="menu-btn">Menu</p>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="overlay" id="overlay">
+                <div class="featured-image" id="featured-image"></div>
+                <div class="overlay-header">
+                    <div class="grid">
+                        <div class="overlay-brand">
+                            <div class="text-reveal">
+                                <a href="#">Summer Days Studio</a>
+                            </div>
+                        </div>
+                        <div class="close-toggle">
+                            <div class="text-reveal">
+                                <p id="close-btn">Close</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav class="nav-menu">
+                    <div class="nav-menu-inner">
+                        <div class="nav-item">
+                            <div class="text-reveal">
+                                <a href="#" class="nav-link shift-effect">Projects</a>
+                            </div>
+                        </div>
+                        <div class="nav-item">
+                            <div class="text-reveal">
+                                <a href="#" class="nav-link shift-effect">Features</a>
+                            </div>
+                        </div>
+                        <div class="nav-item">
+                            <div class="text-reveal">
+                                <a href="#" class="nav-link shift-effect">Typography</a>
+                            </div>
+                        </div>
+                        <div class="nav-item">
+                            <div class="text-reveal">
+                                <a href="#" class="nav-link shift-effect">Photography</a>
+                            </div>
+                        </div>
+                        <div class="nav-item">
+                            <div class="text-reveal">
+                                <a href="#" class="nav-link shift-effect">About</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <footer class="overlay-footer">
+                    <div class="grid">
+                        <div class="copyright">
+                            <div class="text-reveal">
+                                <p>&copy; Summer Days Studio 2025</p>
+                            </div>
+                        </div>
+                        <div class="social-links">
+                            <div class="text-reveal">
+                                <a href="#">VSCO</a>
+                            </div>
+                            <div class="text-reveal">
+                                <a href="#">Instagram</a>
+                            </div>
+                            <div class="text-reveal">
+                                <a href="#">X</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </header>
+    </div>
+
+    <!-- 3D Canvas Container -->
+    <div class="canvas-container">
+        <canvas class="webgl"></canvas>
+    </div>
+
+    <!-- Content sections -->
+    <div class="content">
+        <section class="section">
+            <div class="section-inner">
+                <h1 class="title">Contour<br>Sphere</h1>
+                <p class="description">A procedural visualization of topology using contour lines on a split sphere, controlled by your scroll position.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-inner">
+                <h1 class="title">Scroll<br>Transform</h1>
+                <p class="description">The shape responds to your scrolling, morphing between different states with unique contour patterns.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-inner">
+                <h1 class="title">Advanced<br>Shading</h1>
+                <p class="description">Sharp contour lines with rim effects inspired by Inigo Quilez's raymarching techniques and topographical mapping.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-inner">
+                <h1 class="title">Creative<br>Controls</h1>
+                <p class="description">Fine-tune the appearance with the control panel or toggle manual control to explore on your own.</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrambleTextPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
+    <script>
+        // Register plugins
+        gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin, SplitText);
+
+        // Create custom ease for animations
+        const slideEase = "cubic-bezier(0.65,0.05,0.36,1)";
+
+        // Store global Three.js references for cleanup
+        let globalRenderer = null;
+        let globalMaterial = null;
+
+        // Initialize Three.js visualization
+        function initThreeJS() {
+            // Enhanced settings with optimized values
+            const settings = {
+                lineCount: 35,
+                lineWidth: 0.02,
+                lineSharpness: 25.0,
+                rimEffect: 0.8,
+                rimIntensity: 3.0,
+                rimWidth: 0.6,
+                offset: 0.0,
+                sphereDetail: 96,
+                gap: 0.3,
+                distortion: 0.0,
+                twist: 0.0,
+                useHighlights: true,
+                highlightIntensity: 0.7,
+                occlusion: 0.3,
+                glowIntensity: 0.6,
+                glowColor: new THREE.Color(0x3388ff),
+                colorShift: 0.0,
+                pulseSpeed: 0.5,
+                lineColorA: new THREE.Color(0xffffff),
+                lineColorB: new THREE.Color(0x88ccff)
+            };
+
+            // Improved noise and utility functions
+            const helperFunctions = `
+                float hash(float n) { 
+                  return fract(sin(n) * 43758.5453123); 
+                }
+                
+                float hash(vec3 p) {
+                  p = fract(p * 0.3183099 + .1);
+                  p *= 17.0;
+                  return fract(p.x * p.y * p.z * (p.x + p.y + p.z));
+                }
+                
+                float smootherstep(float edge0, float edge1, float x, float smoothness) {
+                  x = clamp((x - edge0) / (edge1 - edge0), 0.0, 1.0);
+                  return pow(x, smoothness) * (smoothness + 1.0) - pow(x, smoothness + 1.0) * smoothness;
+                }
+                
+                float contour(float val, float width, float sharpness) {
+                  float contourVal = abs(fract(val) - 0.5);
+                  return pow(smoothstep(0.0, width, contourVal), sharpness);
+                }
+                
+                float fresnel(vec3 normal, vec3 viewDir, float power) {
+                  return pow(1.0 - abs(dot(normal, viewDir)), power);
+                }
+                
+                float noise(vec3 p) {
+                  vec3 i = floor(p);
+                  vec3 f = fract(p);
+                  f = f*f*(3.0-2.0*f);
+                  
+                  float n = i.x + i.y*157.0 + 113.0*i.z;
+                  return mix(
+                    mix(mix(hash(n+0.0), hash(n+1.0), f.x),
+                        mix(hash(n+157.0), hash(n+158.0), f.x), f.y),
+                    mix(mix(hash(n+113.0), hash(n+114.0), f.x),
+                        mix(hash(n+270.0), hash(n+271.0), f.x), f.y), f.z);
+                }
+                
+                float fbm(vec3 p, int octaves) {
+                  float value = 0.0;
+                  float amplitude = 0.5;
+                  float frequency = 1.0;
+                  
+                  for (int i = 0; i < octaves; i++) {
+                    value += amplitude * noise(p * frequency);
+                    amplitude *= 0.5;
+                    frequency *= 2.0;
+                    
+                    if (amplitude < 0.01) break;
+                  }
+                  
+                  return value;
+                }
+                
+                vec3 mixColor(vec3 colorA, vec3 colorB, float t) {
+                  return mix(colorA, colorB, t);
+                }
+              `;
+
+              // Enhanced vertex shader with improved deformations
+              const vertexShader = `
+                ${helperFunctions}
+                
+                varying vec3 vNormal;
+                varying vec3 vViewDir;
+                varying vec3 vPosition;
+                varying vec3 vOrigPosition;
+                varying vec3 vWorldPosition;
+                varying float vFresnel;
+                varying float vElevation;
+                varying float vDistortion;
+                
+                uniform float uRimEffect;
+                uniform float uRimIntensity;
+                uniform float uScrollProgress;
+                uniform float uDistortion;
+                uniform float uTwist;
+                uniform float uTime;
+                uniform float uPulseSpeed;
+                
+                vec3 twist(vec3 p, float strength) {
+                  float c = cos(strength * p.y);
+                  float s = sin(strength * p.y);
+                  mat2 m = mat2(c, -s, s, c);
+                  return vec3(m * p.xz, p.y).xzy;
+                }
+                
+                float pulseEffect(float time, float speed) {
+                  return 0.5 * sin(time * speed) + 0.5;
+                }
+                
+                void main() {
+                  vOrigPosition = position;
+                  
+                  vec3 pos = position;
+                  
+                  float pulse = pulseEffect(uTime, uPulseSpeed);
+                  
+                  float twistAmount = uTwist * (1.0 + pulse * 0.1);
+                  pos = twist(pos, twistAmount);
+                  
+                  float distortionAmount = uDistortion;
+                  float noiseValue = 0.0;
+                  
+                  if (distortionAmount > 0.0) {
+                    noiseValue = fbm(pos * 3.0 + vec3(0.0, uTime * 0.1, uScrollProgress * 10.0), 3) * 2.0 - 1.0;
+                    pos += normal * noiseValue * distortionAmount;
+                    vDistortion = noiseValue * distortionAmount;
+                  } else {
+                    vDistortion = 0.0;
+                  }
+                  
+                  vec3 transformedNormal = normalize(normal);
+                  if (distortionAmount > 0.0 || twistAmount > 0.0) {
+                    float delta = 0.01;
+                    vec3 tangent = normalize(cross(normal, vec3(0.0, 1.0, 0.0)));
+                    vec3 bitangent = normalize(cross(normal, tangent));
+                    
+                    vec3 posP1 = position + tangent * delta;
+                    vec3 posP2 = position + bitangent * delta;
+                    
+                    if (twistAmount > 0.0) {
+                      posP1 = twist(posP1, twistAmount);
+                      posP2 = twist(posP2, twistAmount);
+                    }
+                    
+                    if (distortionAmount > 0.0) {
+                      float n1 = fbm(posP1 * 3.0 + vec3(0.0, uTime * 0.1, uScrollProgress * 10.0), 2) * 2.0 - 1.0;
+                      float n2 = fbm(posP2 * 3.0 + vec3(0.0, uTime * 0.1, uScrollProgress * 10.0), 2) * 2.0 - 1.0;
+                      posP1 += normal * n1 * distortionAmount;
+                      posP2 += normal * n2 * distortionAmount;
+                    }
+                    
+                    vec3 newTangent = normalize(posP1 - pos);
+                    vec3 newBitangent = normalize(posP2 - pos);
+                    
+                    transformedNormal = normalize(cross(newTangent, newBitangent));
+                  }
+                  
+                  vNormal = normalMatrix * transformedNormal;
+                  vPosition = pos;
+                  
+                  vWorldPosition = (modelMatrix * vec4(pos, 1.0)).xyz;
+                  
+                  vec3 worldCameraPos = cameraPosition;
+                  vec3 worldViewDir = normalize(worldCameraPos - vWorldPosition);
+                  vViewDir = worldViewDir;
+                  
+                  vFresnel = fresnel(normalize((modelMatrix * vec4(transformedNormal, 0.0)).xyz), worldViewDir, uRimIntensity * (1.0 + pulse * 0.2));
+                  
+                  vElevation = length(pos);
+                  
+                  gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                }
+              `;
+
+              // Enhanced fragment shader with improved visual effects
+              const fragmentShader = `
+                ${helperFunctions}
+                
+                varying vec3 vNormal;
+                varying vec3 vViewDir;
+                varying vec3 vPosition;
+                varying vec3 vOrigPosition;
+                varying vec3 vWorldPosition;
+                varying float vFresnel;
+                varying float vElevation;
+                varying float vDistortion;
+                
+                uniform float uLineCount;
+                uniform float uLineWidth;
+                uniform float uLineSharpness;
+                uniform float uRimEffect;
+                uniform float uRimWidth;
+                uniform float uOffset;
+                uniform bool uUseHighlights;
+                uniform float uHighlightIntensity;
+                uniform float uOcclusion;
+                uniform float uScrollProgress;
+                uniform float uDistortion;
+                uniform float uTime;
+                uniform float uGlowIntensity;
+                uniform vec3 uGlowColor;
+                uniform float uColorShift;
+                uniform vec3 uLineColorA;
+                uniform vec3 uLineColorB;
+                
+                void main() {
+                  vec3 dir = normalize(vPosition);
+                  
+                  float elevation = vElevation;
+                  
+                  elevation += dot(normalize(vNormal), dir) * 0.05;
+                  
+                  float timeOffset = sin(uTime * 0.2) * 0.05;
+                  
+                  float rimFactor = vFresnel * uRimEffect;
+                  
+                  float gradient = 1.0 + pow(rimFactor, 2.0) * 5.0;
+                  
+                  float contourValue;
+                  
+                  if (uScrollProgress < 0.33) {
+                    contourValue = (elevation + uOffset + uScrollProgress + timeOffset) * uLineCount * mix(1.0, gradient, uRimWidth);
+                  } else if (uScrollProgress < 0.66) {
+                    float localProgress = (uScrollProgress - 0.33) * 3.0;
+                    float pulseEffect = 0.2 + 0.1 * sin(uTime * 0.5);
+                    vec3 localPos = vPosition * (1.0 + sin(localProgress * 6.28) * pulseEffect);
+                    contourValue = length(localPos.xz) * uLineCount * 2.0;
+                  } else {
+                    float localProgress = (uScrollProgress - 0.66) * 3.0;
+                    float noise1 = fbm(vPosition * 5.0 + vec3(uTime * 0.1, 0.0, uScrollProgress), 2);
+                    float noise2 = fbm(vPosition * 2.0 - vec3(0.0, uTime * 0.2, uScrollProgress * 3.0), 2);
+                    contourValue = (elevation * noise1 + noise2 * 2.0) * uLineCount;
+                  }
+                  
+                  float lineVal = 1.0 - contour(contourValue, uLineWidth, uLineSharpness);
+                  
+                  lineVal = mix(lineVal, step(uLineWidth * 2.0, abs(fract(contourValue) - 0.5)), rimFactor * 0.7);
+                  
+                  float colorMix = 0.5 + 0.5 * sin(vElevation * 5.0 + uTime * 0.3 + vDistortion * 2.0);
+                  colorMix = mix(colorMix, rimFactor, uColorShift);
+                  
+                  vec3 lineColor = mixColor(uLineColorA, uLineColorB, colorMix);
+                  
+                  vec3 color = lineColor * lineVal;
+                  
+                  if (uUseHighlights) {
+                    vec3 lightDir = normalize(vec3(
+                      sin(uScrollProgress * 6.28 + uTime * 0.2), 
+                      1.0, 
+                      cos(uScrollProgress * 6.28 + uTime * 0.2)
+                    ));
+                    
+                    vec3 halfVector = normalize(lightDir + vViewDir);
+                    float specular = pow(max(0.0, dot(vNormal, halfVector)), 16.0);
+                    
+                    color += vec3(specular) * lineVal * uHighlightIntensity;
+                    
+                    float ao = 1.0 - uOcclusion * (1.0 - dot(vNormal, vec3(0.0, 1.0, 0.0)));
+                    color *= ao;
+                  }
+                  
+                  color *= (0.98 + hash(vPosition * 1000.0) * 0.04);
+                  
+                  vec3 glowColor = uGlowColor * rimFactor * uGlowIntensity;
+                  color += glowColor;
+                  
+                  float alpha = lineVal * 0.8 + rimFactor * 0.2;
+                  
+                  gl_FragColor = vec4(color, alpha);
+                }
+              `;
+
+              try {
+                  // Setup renderer with transparency
+                  const canvas = document.querySelector("canvas.webgl");
+                  if (!canvas) {
+                      console.error("Canvas element not found");
+                      return;
+                  }
+
+                  // Check for WebGL support
+                  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                  if (!gl) {
+                      console.error("WebGL not supported");
+                      document.querySelector('.canvas-container').style.display = 'none';
+                      return;
+                  }
+
+                  const renderer = new THREE.WebGLRenderer({
+                    canvas: canvas,
+                    antialias: true,
+                    alpha: true
+                  });
+                  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+                  renderer.setSize(window.innerWidth, window.innerHeight);
+                  renderer.setClearColor(0x000000, 0);
+
+                  // Store global reference for cleanup
+                  globalRenderer = renderer;
+
+                  // Setup camera
+                  const camera = new THREE.PerspectiveCamera(
+                    45,
+                    window.innerWidth / window.innerHeight,
+                    0.1,
+                    1000
+                  );
+                  camera.position.set(0, 0, 3.5);
+
+                  // Create scene
+                  const scene = new THREE.Scene();
+
+                  // Create shader material with uniforms and transparency
+                  const material = new THREE.ShaderMaterial({
+                    vertexShader,
+                    fragmentShader,
+                    uniforms: {
+                      uLineCount: { value: settings.lineCount },
+                      uLineWidth: { value: settings.lineWidth },
+                      uLineSharpness: { value: settings.lineSharpness },
+                      uRimEffect: { value: settings.rimEffect },
+                      uRimIntensity: { value: settings.rimIntensity },
+                      uRimWidth: { value: settings.rimWidth },
+                      uOffset: { value: settings.offset },
+                      uUseHighlights: { value: settings.useHighlights },
+                      uHighlightIntensity: { value: settings.highlightIntensity },
+                      uOcclusion: { value: settings.occlusion },
+                      uScrollProgress: { value: 0.0 },
+                      uDistortion: { value: settings.distortion },
+                      uTwist: { value: settings.twist },
+                      uTime: { value: 0.0 },
+                      uGlowIntensity: { value: settings.glowIntensity },
+                      uGlowColor: { value: settings.glowColor },
+                      uColorShift: { value: settings.colorShift },
+                      uPulseSpeed: { value: settings.pulseSpeed },
+                      uLineColorA: { value: settings.lineColorA },
+                      uLineColorB: { value: settings.lineColorB }
+                    },
+                    transparent: true,
+                    side: THREE.DoubleSide,
+                    depthWrite: false
+                  });
+
+                  // Store global reference for cleanup
+                  globalMaterial = material;
+
+                  // Create a group for both hemispheres
+                  const group = new THREE.Group();
+                  scene.add(group);
+
+                  // Create variables to track hemispheres
+                  let leftSphere, rightSphere;
+                  let materials = [];
+                  let lastDetailLevel, lastGap;
+
+                  // Optimized function to create/update geometry
+                  function createGeometry() {
+                    if (leftSphere) {
+                      group.remove(leftSphere);
+                      group.remove(rightSphere);
+                    }
+
+                    const sphereDetail = parseInt(settings.sphereDetail);
+
+                    const radius = 1;
+                    const leftGeometry = new THREE.SphereGeometry(
+                      radius,
+                      sphereDetail,
+                      sphereDetail,
+                      0,
+                      Math.PI,
+                      0,
+                      Math.PI
+                    );
+
+                    const rightGeometry = new THREE.SphereGeometry(
+                      radius,
+                      sphereDetail,
+                      sphereDetail,
+                      Math.PI,
+                      Math.PI,
+                      0,
+                      Math.PI
+                    );
+
+                    const leftMaterial = material.clone();
+                    const rightMaterial = material.clone();
+
+                    leftSphere = new THREE.Mesh(leftGeometry, leftMaterial);
+                    rightSphere = new THREE.Mesh(rightGeometry, rightMaterial);
+
+                    const gap = settings.gap / 2;
+                    leftSphere.position.x = -gap;
+                    rightSphere.position.x = gap;
+
+                    group.add(leftSphere);
+                    group.add(rightSphere);
+
+                    materials = [leftMaterial, rightMaterial];
+
+                    lastDetailLevel = settings.sphereDetail;
+                    lastGap = settings.gap;
+                  }
+
+                  // Initial geometry creation
+                  createGeometry();
+
+                  // Handle window resize with debounce for better performance
+                  let resizeTimeout;
+                  window.addEventListener("resize", () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => {
+                      camera.aspect = window.innerWidth / window.innerHeight;
+                      camera.updateProjectionMatrix();
+                      renderer.setSize(window.innerWidth, window.innerHeight);
+                    }, 250);
+                  });
+
+                  // Animation variables
+                  let scrollProgress = 0;
+                  let initialGroupRotation = { x: 0, y: 0, z: 0 };
+                  let clock = new THREE.Clock();
+
+                  // Create enhanced scroll animations with GSAP
+                  function setupScrollAnimations() {
+                    initialGroupRotation = {
+                      x: group.rotation.x,
+                      y: group.rotation.y,
+                      z: group.rotation.z
+                    };
+
+                    gsap.utils.toArray("section").forEach((section, i) => {
+                      const heading = section.querySelector("h1");
+                      const paragraph = section.querySelector("p");
+
+                      gsap
+                        .timeline({
+                          scrollTrigger: {
+                            trigger: section,
+                            start: "top 80%",
+                            end: "bottom 20%",
+                            toggleActions: "play none none reverse"
+                          }
+                        })
+                        .to(heading, {
+                          opacity: 1,
+                          y: 0,
+                          duration: 0.6,
+                          ease: "power2.out"
+                        })
+                        .to(
+                          paragraph,
+                          {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.6,
+                            ease: "power2.out"
+                          },
+                          "-=0.4"
+                        );
+                    });
+
+                    ScrollTrigger.create({
+                      trigger: "body",
+                      start: "top top",
+                      end: "bottom bottom",
+                      onUpdate: (self) => {
+                        scrollProgress = self.progress;
+
+                        materials.forEach((mat) => {
+                          mat.uniforms.uScrollProgress.value = scrollProgress;
+                        });
+
+                        if (scrollProgress < 0.25) {
+                          const localProgress = scrollProgress * 4.0;
+                          settings.gap = gsap.utils.interpolate(0.1, 0.5, localProgress);
+                          settings.distortion = gsap.utils.interpolate(0.0, 0.1, localProgress);
+                          settings.twist = 0.0;
+                          settings.colorShift = gsap.utils.interpolate(0.0, 0.3, localProgress);
+                          settings.glowIntensity = gsap.utils.interpolate(0.2, 0.4, localProgress);
+
+                          group.rotation.x = gsap.utils.interpolate(0, 0.2, localProgress);
+                          group.rotation.y = gsap.utils.interpolate(0, Math.PI * 0.25, localProgress);
+                        } else if (scrollProgress < 0.5) {
+                          const localProgress = (scrollProgress - 0.25) * 4.0;
+                          settings.gap = gsap.utils.interpolate(0.5, 0.3, localProgress);
+                          settings.distortion = gsap.utils.interpolate(0.1, 0.2, localProgress);
+                          settings.twist = gsap.utils.interpolate(0.0, 3.0, localProgress);
+                          settings.colorShift = gsap.utils.interpolate(0.3, 0.6, localProgress);
+                          settings.glowIntensity = gsap.utils.interpolate(0.4, 0.6, localProgress);
+
+                          group.rotation.x = gsap.utils.interpolate(0.2, Math.PI * 0.25, localProgress);
+                          group.rotation.y = gsap.utils.interpolate(Math.PI * 0.25, Math.PI * 0.5, localProgress);
+                        } else if (scrollProgress < 0.75) {
+                          const localProgress = (scrollProgress - 0.5) * 4.0;
+                          settings.gap = 0.3;
+                          settings.distortion = gsap.utils.interpolate(0.2, 0.5, localProgress);
+                          settings.twist = gsap.utils.interpolate(3.0, 1.0, localProgress);
+                          settings.colorShift = gsap.utils.interpolate(0.6, 0.8, localProgress);
+                          settings.glowIntensity = gsap.utils.interpolate(0.6, 0.8, localProgress);
+
+                          group.rotation.x = Math.PI * 0.25;
+                          group.rotation.y = gsap.utils.interpolate(Math.PI * 0.5, Math.PI, localProgress);
+                        } else {
+                          const localProgress = (scrollProgress - 0.75) * 4.0;
+                          settings.gap = gsap.utils.interpolate(0.3, 0.2, localProgress);
+                          settings.distortion = gsap.utils.interpolate(0.5, 0.0, localProgress);
+                          settings.twist = gsap.utils.interpolate(1.0, 0.0, localProgress);
+                          settings.colorShift = gsap.utils.interpolate(0.8, 0.0, localProgress);
+                          settings.glowIntensity = gsap.utils.interpolate(0.8, 0.2, localProgress);
+
+                          group.rotation.x = gsap.utils.interpolate(Math.PI * 0.25, 0, localProgress);
+                          group.rotation.y = gsap.utils.interpolate(Math.PI, Math.PI * 2, localProgress);
+                        }
+
+                        materials.forEach((mat) => {
+                          mat.uniforms.uDistortion.value = settings.distortion;
+                          mat.uniforms.uTwist.value = settings.twist;
+                          mat.uniforms.uGlowIntensity.value = settings.glowIntensity;
+                          mat.uniforms.uColorShift.value = settings.colorShift;
+                        });
+
+                        if (leftSphere && rightSphere) {
+                          const gap = settings.gap / 2;
+                          leftSphere.position.x = -gap;
+                          rightSphere.position.x = gap;
+                          lastGap = settings.gap;
+                        }
+
+                        const lineCount = gsap.utils.interpolate(30, 60, scrollProgress);
+                        settings.lineCount = lineCount;
+
+                        const startColor = new THREE.Color(0xffffff);
+                        const midColor = new THREE.Color(0x88ccff);
+                        const endColor = new THREE.Color(0x44aaff);
+
+                        if (scrollProgress < 0.5) {
+                          settings.lineColorA = startColor.clone().lerp(midColor, scrollProgress * 2);
+                        } else {
+                          settings.lineColorA = midColor.clone().lerp(endColor, (scrollProgress - 0.5) * 2);
+                        }
+
+                        materials.forEach((mat) => {
+                          mat.uniforms.uLineColorA.value = settings.lineColorA;
+                        });
+                      }
+                    });
+                  }
+
+                  // Animation loop with time-based effects
+                  function animate() {
+                    requestAnimationFrame(animate);
+
+                    const elapsedTime = clock.getElapsedTime();
+                    materials.forEach((material) => {
+                      material.uniforms.uTime.value = elapsedTime;
+                    });
+
+                    materials.forEach((material) => {
+                      material.uniforms.uLineCount.value = settings.lineCount;
+                      material.uniforms.uLineWidth.value = settings.lineWidth;
+                      material.uniforms.uLineSharpness.value = settings.lineSharpness;
+                      material.uniforms.uRimEffect.value = settings.rimEffect;
+                      material.uniforms.uRimIntensity.value = settings.rimIntensity;
+                      material.uniforms.uRimWidth.value = settings.rimWidth;
+                      material.uniforms.uOffset.value = settings.offset;
+                      material.uniforms.uUseHighlights.value = settings.useHighlights;
+                      material.uniforms.uHighlightIntensity.value = settings.highlightIntensity;
+                      material.uniforms.uOcclusion.value = settings.occlusion;
+                      material.uniforms.uPulseSpeed.value = settings.pulseSpeed;
+                      material.uniforms.uLineColorB.value = settings.lineColorB;
+                    });
+
+                    if (lastDetailLevel !== settings.sphereDetail) {
+                      createGeometry();
+                    }
+
+                    group.rotation.z = Math.sin(elapsedTime * 0.1) * 0.05;
+
+                    renderer.render(scene, camera);
+                  }
+
+                  // Store setupScrollAnimations in a parent scope for access
+                  window.setupScrollAnimations = setupScrollAnimations;
+
+                  // Start animation
+                  animate();
+
+              } catch (error) {
+                  console.error("Failed to initialize 3D visualization:", error);
+                  // Hide canvas container on error
+                  const canvasContainer = document.querySelector('.canvas-container');
+                  if (canvasContainer) {
+                      canvasContainer.style.display = 'none';
+                  }
+              }
+        }
+
+        // Initialize Three.js
+        initThreeJS();
+
+        // Initialize elements
+        const terminalLines = document.querySelectorAll(".terminal-line");
+        const preloaderEl = document.getElementById("preloader");
+        const contentEl = document.getElementById("content");
+
+        // Special characters for scramble effect
+        const specialChars = "▪";
+
+        // Store original text content for spans that will be scrambled
+        const originalTexts = {};
+        document
+          .querySelectorAll('.terminal-line span[data-scramble="true"]')
+          .forEach(function (span, index) {
+            const originalText = span.textContent;
+            originalTexts[index] = originalText;
+            span.setAttribute("data-original-text", originalText);
+            span.textContent = "";
+          });
+
+        // Set initial state - make sure terminal lines are initially hidden
+        gsap.set(".terminal-line", {
+          opacity: 0
+        });
+
+        // Function to update progress bar
+        function updateProgress(percent) {
+          const progressBar = document.getElementById("progress-bar");
+          if (progressBar) {
+            progressBar.style.transition = "none";
+            progressBar.style.width = percent + "%";
+          }
+        }
+
+        // Terminal preloader animation
+        function animateTerminalPreloader() {
+          updateProgress(0);
+
+          const tl = gsap.timeline({
+            onComplete: function () {
+              revealContent();
+            }
+          });
+
+          const totalDuration = 6;
+
+          const allLines = Array.from(document.querySelectorAll(".terminal-line"));
+          allLines.sort((a, b) => {
+            const aTop = parseInt(a.style.top);
+            const bTop = parseInt(b.style.top);
+            return aTop - bTop;
+          });
+
+          const textRevealTl = gsap.timeline();
+
+          allLines.forEach((line, lineIndex) => {
+            const baseOpacity = lineIndex % 2 === 0 ? 1 : 0.7;
+            const timePoint = (lineIndex / allLines.length) * (totalDuration * 0.8);
+
+            textRevealTl.to(
+              line,
+              {
+                opacity: baseOpacity,
+                duration: 0.3
+              },
+              timePoint
+            );
+
+            const scrambleSpans = line.querySelectorAll('span[data-scramble="true"]');
+
+            scrambleSpans.forEach((span) => {
+              const originalText =
+                span.getAttribute("data-original-text") || span.textContent;
+
+              textRevealTl.to(
+                span,
+                {
+                  duration: 0.8,
+                  scrambleText: {
+                    text: originalText,
+                    chars: specialChars,
+                    revealDelay: 0,
+                    speed: 0.3
+                  },
+                  ease: "none"
+                },
+                timePoint + 0.1
+              );
+            });
+          });
+
+          tl.add(textRevealTl, 0);
+
+          for (let i = 0; i < 3; i++) {
+            const randomTime = 1 + i * 1.5;
+            tl.add(function () {
+              const glitchTl = gsap.timeline();
+
+              const allScrambleSpans = document.querySelectorAll(
+                'span[data-scramble="true"]'
+              );
+              const randomSpans = [];
+
+              const numToGlitch = 3 + Math.floor(Math.random() * 3);
+              for (let j = 0; j < numToGlitch; j++) {
+                const randomIndex = Math.floor(
+                  Math.random() * allScrambleSpans.length
+                );
+                randomSpans.push(allScrambleSpans[randomIndex]);
+              }
+
+              randomSpans.forEach((span) => {
+                const text =
+                  span.textContent || span.getAttribute("data-original-text");
+
+                glitchTl.to(
+                  span,
+                  {
+                    duration: 0.2,
+                    scrambleText: {
+                      text: text,
+                      chars: specialChars,
+                      revealDelay: 0,
+                      speed: 0.1
+                    },
+                    ease: "none",
+                    repeat: 1
+                  },
+                  Math.random() * 0.5
+                );
+              });
+
+              return glitchTl;
+            }, randomTime);
+          }
+
+          const disappearTl = gsap.timeline();
+
+          disappearTl.to(allLines, {
+            opacity: 0,
+            duration: 0.2,
+            stagger: 0.1,
+            ease: "power1.in"
+          });
+
+          tl.add(disappearTl, totalDuration - 1);
+
+          tl.eventCallback("onUpdate", function () {
+            const progress = Math.min(99, tl.progress() * 100);
+            updateProgress(progress);
+          });
+
+          tl.call(
+            function () {
+              updateProgress(100);
+            },
+            [],
+            totalDuration - 0.5
+          );
+
+          return tl;
+        }
+
+        // Reveal content by transitioning the preloader out
+        function revealContent() {
+          const titleLines = document.querySelectorAll(
+            ".quote-section .title-line span"
+          );
+
+          const revealTl = gsap.timeline();
+
+          revealTl.to(preloaderEl, {
+            clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
+            duration: 0.64,
+            ease: slideEase,
+            onComplete: () => {
+              preloaderEl.style.display = "none";
+            }
+          });
+
+          revealTl.to(
+            contentEl,
+            {
+              opacity: 1,
+              visibility: "visible",
+              duration: 0.3
+            },
+            "-=0.3"
+          );
+
+          revealTl.call(() => {
+            const navLinks = document.querySelectorAll(".nav-link");
+            navLinks.forEach((link) => {
+              const splitLink = new SplitText(link, {
+                type: "chars",
+                charsClass: "char",
+                position: "relative",
+                linesClass: "line",
+                deepSlice: true,
+                propIndex: true
+              });
+
+              link._splitText = splitLink;
+
+              link.addEventListener("mouseenter", () => {
+                gsap.to(splitLink.chars, {
+                  x: (i) => `${0.5 + i * 0.1}em`,
+                  duration: 0.64,
+                  ease: slideEase,
+                  stagger: {
+                    each: 0.015,
+                    from: "start"
+                  }
+                });
+              });
+
+              link.addEventListener("mouseleave", () => {
+                gsap.to(splitLink.chars, {
+                  x: 0,
+                  duration: 0.64,
+                  ease: slideEase,
+                  stagger: {
+                    each: 0.01,
+                    from: "end"
+                  }
+                });
+              });
+            });
+            
+            // Initialize scroll animations using the stored reference
+            if (window.setupScrollAnimations) {
+                window.setupScrollAnimations();
+            }
+          });
+
+          revealTl.to(
+            titleLines,
+            {
+              y: "0%",
+              duration: 0.64,
+              stagger: 0.1,
+              ease: slideEase
+            },
+            "-=0.2"
+          );
+        }
+
+        // Initialize menu functionality
+        function initializeMenu() {
+          const menuBtn = document.getElementById("menu-btn");
+          const closeBtn = document.getElementById("close-btn");
+          
+          if (!menuBtn || !closeBtn) {
+            console.warn("Menu buttons not found");
+            return;
+          }
+          
+          const overlay = document.getElementById("overlay");
+          const featuredImage = document.getElementById("featured-image");
+          const brandLogo = document.querySelector(".brand .text-reveal a");
+          const primaryNav = document.querySelector(".primary-nav .grid");
+          const overlayBrand = document.querySelector(
+            ".overlay-brand .text-reveal a"
+          );
+          const overlayClose = document.querySelector(".close-toggle .text-reveal p");
+          const navLinks = document.querySelectorAll(".nav-link");
+          const footerItems = document.querySelectorAll(
+            ".overlay-footer .text-reveal p, .overlay-footer .text-reveal a"
+          );
+          const titleLines = document.querySelectorAll(
+            ".quote-section .title-line span"
+          );
+
+          let isAnimating = false;
+
+          gsap.set(overlay, {
+            clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
+            pointerEvents: "none"
+          });
+
+          gsap.set(featuredImage, {
+            clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)"
+          });
+
+          gsap.set([overlayBrand, overlayClose], {
+            y: "100%"
+          });
+
+          gsap.set(".nav-link", {
+            y: "100%"
+          });
+
+          gsap.set(footerItems, {
+            y: "100%"
+          });
+
+          // Open menu function
+          function openMenu() {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            const tl = gsap.timeline({
+              onComplete: () => (isAnimating = false)
+            });
+
+            tl.to(titleLines, {
+              y: "100%",
+              duration: 0.64,
+              stagger: 0.075,
+              ease: slideEase
+            });
+
+            tl.to(
+              [brandLogo, menuBtn],
+              {
+                y: "-100%",
+                duration: 0.64,
+                stagger: 0.1,
+                ease: slideEase,
+                onComplete: () => {
+                  primaryNav.style.pointerEvents = "none";
+                  gsap.set([brandLogo, menuBtn], {
+                    y: "100%"
+                  });
+                }
+              },
+              "-=0.4"
+            );
+
+            tl.to(
+              overlay,
+              {
+                clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                duration: 0.64,
+                ease: slideEase,
+                onStart: () => {
+                  overlay.style.pointerEvents = "all";
+                }
+              },
+              "-=0.4"
+            );
+
+            tl.fromTo(
+              featuredImage,
+              {
+                clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)"
+              },
+              {
+                clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+                duration: 0.64,
+                ease: slideEase
+              },
+              "-=0.2"
+            );
+
+            tl.to(
+              [overlayBrand, overlayClose],
+              {
+                y: "0%",
+                duration: 0.64,
+                stagger: 0.1,
+                ease: slideEase
+              },
+              "-=0.3"
+            );
+
+            tl.to(
+              ".nav-link",
+              {
+                y: "0%",
+                duration: 0.64,
+                stagger: 0.075,
+                ease: slideEase
+              },
+              "<"
+            );
+
+            tl.to(
+              footerItems,
+              {
+                y: "0%",
+                duration: 0.64,
+                stagger: 0.1,
+                ease: slideEase
+              },
+              "<"
+            );
+          }
+
+          // Close menu function
+          function closeMenu() {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            const tl = gsap.timeline({
+              onComplete: () => {
+                isAnimating = false;
+              }
+            });
+
+            tl.to([overlayBrand, overlayClose], {
+              y: "-100%",
+              duration: 0.64,
+              stagger: 0.1,
+              ease: slideEase
+            });
+
+            tl.to(
+              ".nav-link",
+              {
+                y: "-100%",
+                duration: 0.64,
+                stagger: 0.05,
+                ease: slideEase
+              },
+              "<"
+            );
+
+            tl.to(
+              footerItems,
+              {
+                y: "-100%",
+                duration: 0.64,
+                stagger: 0.05,
+                ease: slideEase
+              },
+              "<"
+            );
+
+            tl.to(
+              featuredImage,
+              {
+                clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
+                duration: 0.64,
+                ease: slideEase
+              },
+              "-=0.64"
+            );
+
+            tl.to(
+              overlay,
+              {
+                clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
+                duration: 0.64,
+                ease: slideEase,
+                onComplete: () => {
+                  overlay.style.pointerEvents = "none";
+                  gsap.set(overlay, {
+                    clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)"
+                  });
+                  gsap.set(featuredImage, {
+                    clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)"
+                  });
+                  gsap.set([overlayBrand, overlayClose], {
+                    y: "100%"
+                  });
+                  gsap.set(".nav-link", {
+                    y: "100%"
+                  });
+                  gsap.set(footerItems, {
+                    y: "100%"
+                  });
+                }
+              },
+              "+=0.2"
+            );
+
+            tl.to(
+              [brandLogo, menuBtn],
+              {
+                y: "0%",
+                duration: 0.64,
+                stagger: 0.1,
+                ease: slideEase,
+                onStart: () => {
+                  primaryNav.style.pointerEvents = "all";
+                }
+              },
+              "-=0.3"
+            );
+
+            tl.to(
+              titleLines,
+              {
+                y: "0%",
+                duration: 0.64,
+                stagger: 0.075,
+                ease: slideEase
+              },
+              "-=0.4"
+            );
+          }
+          
+          // Event listeners (now inside the function)
+          menuBtn.addEventListener("click", openMenu);
+          closeBtn.addEventListener("click", closeMenu);
+          
+          // Menu item click handlers  
+          navLinks.forEach((link) => {
+              link.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  closeMenu();
+              });
+          });
+        }
+
+        // Setup initial preloader state
+        gsap.set(preloaderEl, {
+          clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)"
+        });
+
+        // Set initial state for title lines
+        const titleLines = document.querySelectorAll(
+          ".quote-section .title-line span"
+        );
+        gsap.set(titleLines, {
+          y: "100%"
+        });
+
+        // Start terminal preloader animation
+        const terminalAnimation = animateTerminalPreloader();
+
+        // Initialize menu functionality
+        initializeMenu();
+        
+        // Add cleanup for better performance
+        window.addEventListener('beforeunload', () => {
+            // Dispose of Three.js resources
+            if (globalRenderer) {
+                globalRenderer.dispose();
+            }
+            if (globalMaterial) {
+                globalMaterial.dispose();
+            }
+            // Kill all GSAP animations
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+            gsap.killTweensOf("*");
+        });
+    </script>
+</body>
+</html>
+
