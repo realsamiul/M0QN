@@ -783,10 +783,49 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrambleTextPlugin.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
+    <!-- SplitText is a premium GSAP plugin (requires Club GSAP membership).
+         For production use, obtain a license and host the file yourself.
+         The unpkg link below works for demo/non-commercial use only. -->
+    <script src="https://unpkg.com/gsap@3.12.5/dist/SplitText.min.js"></script>
     <script>
-        // Register plugins
-        gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin, SplitText);
+        // Register plugins conditionally based on availability
+        const pluginsToRegister = [ScrollTrigger, ScrambleTextPlugin].filter(Boolean);
+        if (typeof SplitText !== 'undefined') {
+            pluginsToRegister.push(SplitText);
+        }
+        gsap.registerPlugin(...pluginsToRegister);
+
+        // Fallback for SplitText when the premium plugin is not available
+        function splitTextFallback(element) {
+            const originalText = element.textContent;
+            const chars = [];
+            
+            // Clear the element
+            element.textContent = '';
+            
+            // Wrap each character in a span with class 'char'
+            for (let i = 0; i < originalText.length; i++) {
+                const char = originalText[i];
+                const span = document.createElement('span');
+                span.className = 'char';
+                span.style.display = 'inline-block';
+                span.textContent = char;
+                // Preserve whitespace
+                if (char === ' ') {
+                    span.style.whiteSpace = 'pre';
+                }
+                element.appendChild(span);
+                chars.push(span);
+            }
+            
+            // Return an object that matches SplitText basic API
+            return {
+                chars: chars,
+                revert: function() {
+                    element.textContent = originalText;
+                }
+            };
+        }
 
         // Create custom ease for animations
         const slideEase = "cubic-bezier(0.65,0.05,0.36,1)";
@@ -1224,17 +1263,10 @@
 
                   // Animation variables
                   let scrollProgress = 0;
-                  let initialGroupRotation = { x: 0, y: 0, z: 0 };
                   let clock = new THREE.Clock();
 
                   // Create enhanced scroll animations with GSAP
                   function setupScrollAnimations() {
-                    initialGroupRotation = {
-                      x: group.rotation.x,
-                      y: group.rotation.y,
-                      z: group.rotation.z
-                    };
-
                     gsap.utils.toArray("section").forEach((section, i) => {
                       const heading = section.querySelector("h1");
                       const paragraph = section.querySelector("p");
@@ -1597,14 +1629,20 @@
           revealTl.call(() => {
             const navLinks = document.querySelectorAll(".nav-link");
             navLinks.forEach((link) => {
-              const splitLink = new SplitText(link, {
-                type: "chars",
-                charsClass: "char",
-                position: "relative",
-                linesClass: "line",
-                deepSlice: true,
-                propIndex: true
-              });
+              // Use SplitText if available, otherwise use fallback
+              let splitLink;
+              if (typeof SplitText !== 'undefined') {
+                splitLink = new SplitText(link, {
+                  type: "chars",
+                  charsClass: "char",
+                  position: "relative",
+                  linesClass: "line",
+                  deepSlice: true,
+                  propIndex: true
+                });
+              } else {
+                splitLink = splitTextFallback(link);
+              }
 
               link._splitText = splitLink;
 
