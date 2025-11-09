@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,6 +74,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .preloader.fade-out {
+            opacity: 0;
+            pointer-events: none;
         }
 
         .terminal-preloader {
@@ -388,7 +392,7 @@
             right: 0;
             width: 50%;
             height: 100%;
-            background-image: url("https://assets.codepen.io/7558/bw-spheres-002.jpg");
+            background-image: url("./assets/images/bw-spheres-002.webp");
             background-size: cover;
             background-position: center;
             clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
@@ -403,7 +407,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-image: url("https://assets.codepen.io/7558/bw-spheres-001.jpg");
+            background-image: url("./assets/images/bw-spheres-001.webp");
             background-size: cover;
             background-position: center;
             z-index: -1;
@@ -740,21 +744,21 @@
             <div class="terminal-container">
                 <!-- First block of text - before progress bar -->
                 <div class="terminal-line" style="top: 0px;">
-                    <span class="faded" data-scramble="true">Dimensional Coordinates: Alpha/Omega/Prime</span>
-                    <span class="highlight" data-scramble="true">Coordinates Locked</span>
+                    <span class="faded" data-text="Dimensional Coordinates: Alpha/Omega/Prime">Dimensional Coordinates: Alpha/Omega/Prime</span>
+                    <span class="highlight" data-text="Coordinates Locked">Coordinates Locked</span>
                 </div>
 
                 <div class="terminal-line" style="top: 30px;">
-                    <span class="faded" data-scramble="true">Initiate Quantum Calibration</span>
-                    <span class="highlight" data-scramble="true">Singularity Detected</span>
+                    <span class="faded" data-text="Initiate Quantum Calibration">Initiate Quantum Calibration</span>
+                    <span class="highlight" data-text="Singularity Detected">Singularity Detected</span>
                 </div>
 
                 <div class="terminal-line" style="top: 60px;">
-                    <span class="highlight" data-scramble="true">Beginning Tesseract Unfolding</span>
+                    <span class="highlight" data-text="Beginning Tesseract Unfolding">Beginning Tesseract Unfolding</span>
                 </div>
 
                 <div class="terminal-line" style="top: 90px;">
-                    <span class="highlight" data-scramble="true">Hyperdimensional Matrices Aligned</span>
+                    <span class="highlight" data-text="Hyperdimensional Matrices Aligned">Hyperdimensional Matrices Aligned</span>
                 </div>
 
                 <!-- Progress bar with additional text -->
@@ -763,61 +767,61 @@
                     <div class="progress-container">
                         <div class="progress-bar" id="progress-bar"></div>
                     </div>
-                    <span class="highlight" style="margin-left: 10px;" data-scramble="true">Dimensional Shift</span>
+                    <span class="highlight" style="margin-left: 10px;" data-text="Dimensional Shift">Dimensional Shift</span>
                 </div>
 
                 <!-- Second block of text - after progress bar -->
                 <div class="terminal-line" style="top: 165px;">
-                    <span class="highlight" data-scramble="true">Quantum Entanglement Stabilized</span>
+                    <span class="highlight" data-text="Quantum Entanglement Stabilized">Quantum Entanglement Stabilized</span>
                 </div>
 
                 <div class="terminal-line" style="top: 195px;">
-                    <span class="highlight" data-scramble="true">Cosmic Strings Vibrating in Harmony</span>
+                    <span class="highlight" data-text="Cosmic Strings Vibrating in Harmony">Cosmic Strings Vibrating in Harmony</span>
                 </div>
 
                 <div class="terminal-line" style="top: 225px;">
-                    <span class="highlight" data-scramble="true">Wormhole Aperture Expanding</span>
+                    <span class="highlight" data-text="Wormhole Aperture Expanding">Wormhole Aperture Expanding</span>
                 </div>
 
                 <div class="terminal-line" style="top: 255px;">
-                    <span class="highlight" data-scramble="true">Dimensional Gateway Stabilizing</span>
+                    <span class="highlight" data-text="Dimensional Gateway Stabilizing">Dimensional Gateway Stabilizing</span>
                 </div>
 
                 <div class="terminal-line" style="top: 285px;">
-                    <span class="highlight" data-scramble="true">Reality Parameters Reconfigured</span>
+                    <span class="highlight" data-text="Reality Parameters Reconfigured">Reality Parameters Reconfigured</span>
                 </div>
 
                 <!-- Background faded lines -->
                 <div class="terminal-line" style="top: 15px;">
-                    <span class="faded" data-scramble="true">Quantum Fluctuation Nominal</span>
+                    <span class="faded" data-text="Quantum Fluctuation Nominal">Quantum Fluctuation Nominal</span>
                 </div>
 
                 <div class="terminal-line" style="top: 45px;">
-                    <span class="faded" data-scramble="true">Initiating Spacetime Fold</span>
+                    <span class="faded" data-text="Initiating Spacetime Fold">Initiating Spacetime Fold</span>
                 </div>
 
                 <div class="terminal-line" style="top: 75px;">
-                    <span class="faded" data-scramble="true">Scanning Parallel Realities</span>
+                    <span class="faded" data-text="Scanning Parallel Realities">Scanning Parallel Realities</span>
                 </div>
 
                 <div class="terminal-line" style="top: 105px;">
-                    <span class="faded" data-scramble="true">Analyzing Dark Matter Density</span>
+                    <span class="faded" data-text="Analyzing Dark Matter Density">Analyzing Dark Matter Density</span>
                 </div>
 
                 <div class="terminal-line" style="top: 180px;">
-                    <span class="faded" data-scramble="true">Processing Gravitational Waves</span>
+                    <span class="faded" data-text="Processing Gravitational Waves">Processing Gravitational Waves</span>
                 </div>
 
                 <div class="terminal-line" style="top: 210px;">
-                    <span class="faded" data-scramble="true">Calibrating Temporal Displacement</span>
+                    <span class="faded" data-text="Calibrating Temporal Displacement">Calibrating Temporal Displacement</span>
                 </div>
 
                 <div class="terminal-line" style="top: 240px;">
-                    <span class="faded" data-scramble="true">Evaluating Dimensional Resonance</span>
+                    <span class="faded" data-text="Evaluating Dimensional Resonance">Evaluating Dimensional Resonance</span>
                 </div>
 
                 <div class="terminal-line" style="top: 270px;">
-                    <span class="faded" data-scramble="true">Stabilizing Quantum Foam</span>
+                    <span class="faded" data-text="Stabilizing Quantum Foam">Stabilizing Quantum Foam</span>
                 </div>
             </div>
 
@@ -1049,18 +1053,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrambleTextPlugin.min.js"></script>
-    <!-- SplitText is a premium GSAP plugin (requires Club GSAP membership).
-         For production use, obtain a license and host the file yourself.
-         The unpkg link below works for demo/non-commercial use only. -->
-    <script src="https://unpkg.com/gsap@3.12.5/dist/SplitText.min.js"></script>
     <script>
-        // Register plugins conditionally based on availability
-        const pluginsToRegister = [ScrollTrigger, ScrambleTextPlugin].filter(Boolean);
-        if (typeof SplitText !== 'undefined') {
-            pluginsToRegister.push(SplitText);
+        // Register plugins safely
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
         }
-        gsap.registerPlugin(...pluginsToRegister);
+
+        // Plugin availability flags
+        const hasGSAP = typeof gsap !== 'undefined';
+        const hasScrollTrigger = typeof ScrollTrigger !== 'undefined';
+        const hasThree = typeof THREE !== 'undefined';
+
+        // Create custom ease for animations
+        const slideEase = "cubic-bezier(0.65,0.05,0.36,1)";
+
+        // Store global Three.js references for cleanup
+        let globalRenderer = null;
+        let globalMaterial = null;
+        let threeInitialized = false;
+
+        // Utility function for safe plugin detection
+        function checkPluginSupport() {
+            const support = {
+                gsap: hasGSAP,
+                scrollTrigger: hasScrollTrigger,
+                three: hasThree
+            };
+            
+            console.log('Plugin support:', support);
+            return support;
+        }
 
         // Fallback for SplitText when the premium plugin is not available
         function splitTextFallback(element) {
@@ -1094,295 +1116,310 @@
             };
         }
 
-        // Create custom ease for animations
-        const slideEase = "cubic-bezier(0.65,0.05,0.36,1)";
+        // Simple text animation fallback
+        function animateTextSimple(element, duration = 0.5, delay = 0) {
+            if (!hasGSAP) {
+                element.style.opacity = '1';
+                return;
+            }
+            
+            gsap.fromTo(element, 
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: duration, delay: delay, ease: "power2.out" }
+            );
+        }
 
-        // Store global Three.js references for cleanup
-        let globalRenderer = null;
-        let globalMaterial = null;
-
-        // Initialize Three.js visualization
+        // Initialize Three.js visualization with error handling
         function initThreeJS() {
-            // Enhanced settings with optimized values
-            const settings = {
-                lineCount: 35,
-                lineWidth: 0.02,
-                lineSharpness: 25.0,
-                rimEffect: 0.8,
-                rimIntensity: 3.0,
-                rimWidth: 0.6,
-                offset: 0.0,
-                sphereDetail: 96,
-                gap: 0.3,
-                distortion: 0.0,
-                twist: 0.0,
-                useHighlights: true,
-                highlightIntensity: 0.7,
-                occlusion: 0.3,
-                glowIntensity: 0.6,
-                glowColor: new THREE.Color(0x3388ff),
-                colorShift: 0.0,
-                pulseSpeed: 0.5,
-                lineColorA: new THREE.Color(0xffffff),
-                lineColorB: new THREE.Color(0x88ccff)
-            };
+            if (!hasThree) {
+                console.warn('Three.js not loaded, skipping 3D visualization');
+                const canvasContainer = document.querySelector('.canvas-container');
+                if (canvasContainer) {
+                    canvasContainer.style.display = 'none';
+                }
+                return;
+            }
 
-            // Improved noise and utility functions
-            const helperFunctions = `
-                float hash(float n) { 
-                  return fract(sin(n) * 43758.5453123); 
-                }
-                
-                float hash(vec3 p) {
-                  p = fract(p * 0.3183099 + .1);
-                  p *= 17.0;
-                  return fract(p.x * p.y * p.z * (p.x + p.y + p.z));
-                }
-                
-                float smootherstep(float edge0, float edge1, float x, float smoothness) {
-                  x = clamp((x - edge0) / (edge1 - edge0), 0.0, 1.0);
-                  return pow(x, smoothness) * (smoothness + 1.0) - pow(x, smoothness + 1.0) * smoothness;
-                }
-                
-                float contour(float val, float width, float sharpness) {
-                  float contourVal = abs(fract(val) - 0.5);
-                  return pow(smoothstep(0.0, width, contourVal), sharpness);
-                }
-                
-                float fresnel(vec3 normal, vec3 viewDir, float power) {
-                  return pow(1.0 - abs(dot(normal, viewDir)), power);
-                }
-                
-                float noise(vec3 p) {
-                  vec3 i = floor(p);
-                  vec3 f = fract(p);
-                  f = f*f*(3.0-2.0*f);
-                  
-                  float n = i.x + i.y*157.0 + 113.0*i.z;
-                  return mix(
-                    mix(mix(hash(n+0.0), hash(n+1.0), f.x),
-                        mix(hash(n+157.0), hash(n+158.0), f.x), f.y),
-                    mix(mix(hash(n+113.0), hash(n+114.0), f.x),
-                        mix(hash(n+270.0), hash(n+271.0), f.x), f.y), f.z);
-                }
-                
-                float fbm(vec3 p, int octaves) {
-                  float value = 0.0;
-                  float amplitude = 0.5;
-                  float frequency = 1.0;
-                  
-                  for (int i = 0; i < octaves; i++) {
-                    value += amplitude * noise(p * frequency);
-                    amplitude *= 0.5;
-                    frequency *= 2.0;
-                    
-                    if (amplitude < 0.01) break;
-                  }
-                  
-                  return value;
-                }
-                
-                vec3 mixColor(vec3 colorA, vec3 colorB, float t) {
-                  return mix(colorA, colorB, t);
-                }
-              `;
+            try {
+                // Enhanced settings with optimized values
+                const settings = {
+                    lineCount: 35,
+                    lineWidth: 0.02,
+                    lineSharpness: 25.0,
+                    rimEffect: 0.8,
+                    rimIntensity: 3.0,
+                    rimWidth: 0.6,
+                    offset: 0.0,
+                    sphereDetail: 96,
+                    gap: 0.3,
+                    distortion: 0.0,
+                    twist: 0.0,
+                    useHighlights: true,
+                    highlightIntensity: 0.7,
+                    occlusion: 0.3,
+                    glowIntensity: 0.6,
+                    glowColor: new THREE.Color(0x3388ff),
+                    colorShift: 0.0,
+                    pulseSpeed: 0.5,
+                    lineColorA: new THREE.Color(0xffffff),
+                    lineColorB: new THREE.Color(0x88ccff)
+                };
 
-              // Enhanced vertex shader with improved deformations
-              const vertexShader = `
-                ${helperFunctions}
-                
-                varying vec3 vNormal;
-                varying vec3 vViewDir;
-                varying vec3 vPosition;
-                varying vec3 vOrigPosition;
-                varying vec3 vWorldPosition;
-                varying float vFresnel;
-                varying float vElevation;
-                varying float vDistortion;
-                
-                uniform float uRimEffect;
-                uniform float uRimIntensity;
-                uniform float uScrollProgress;
-                uniform float uDistortion;
-                uniform float uTwist;
-                uniform float uTime;
-                uniform float uPulseSpeed;
-                
-                vec3 twist(vec3 p, float strength) {
-                  float c = cos(strength * p.y);
-                  float s = sin(strength * p.y);
-                  mat2 m = mat2(c, -s, s, c);
-                  return vec3(m * p.xz, p.y).xzy;
-                }
-                
-                float pulseEffect(float time, float speed) {
-                  return 0.5 * sin(time * speed) + 0.5;
-                }
-                
-                void main() {
-                  vOrigPosition = position;
-                  
-                  vec3 pos = position;
-                  
-                  float pulse = pulseEffect(uTime, uPulseSpeed);
-                  
-                  float twistAmount = uTwist * (1.0 + pulse * 0.1);
-                  pos = twist(pos, twistAmount);
-                  
-                  float distortionAmount = uDistortion;
-                  float noiseValue = 0.0;
-                  
-                  if (distortionAmount > 0.0) {
-                    noiseValue = fbm(pos * 3.0 + vec3(0.0, uTime * 0.1, uScrollProgress * 10.0), 3) * 2.0 - 1.0;
-                    pos += normal * noiseValue * distortionAmount;
-                    vDistortion = noiseValue * distortionAmount;
-                  } else {
-                    vDistortion = 0.0;
-                  }
-                  
-                  vec3 transformedNormal = normalize(normal);
-                  if (distortionAmount > 0.0 || twistAmount > 0.0) {
-                    float delta = 0.01;
-                    vec3 tangent = normalize(cross(normal, vec3(0.0, 1.0, 0.0)));
-                    vec3 bitangent = normalize(cross(normal, tangent));
-                    
-                    vec3 posP1 = position + tangent * delta;
-                    vec3 posP2 = position + bitangent * delta;
-                    
-                    if (twistAmount > 0.0) {
-                      posP1 = twist(posP1, twistAmount);
-                      posP2 = twist(posP2, twistAmount);
+                // Improved noise and utility functions
+                const helperFunctions = `
+                    float hash(float n) { 
+                      return fract(sin(n) * 43758.5453123); 
                     }
                     
-                    if (distortionAmount > 0.0) {
-                      float n1 = fbm(posP1 * 3.0 + vec3(0.0, uTime * 0.1, uScrollProgress * 10.0), 2) * 2.0 - 1.0;
-                      float n2 = fbm(posP2 * 3.0 + vec3(0.0, uTime * 0.1, uScrollProgress * 10.0), 2) * 2.0 - 1.0;
-                      posP1 += normal * n1 * distortionAmount;
-                      posP2 += normal * n2 * distortionAmount;
+                    float hash(vec3 p) {
+                      p = fract(p * 0.3183099 + .1);
+                      p *= 17.0;
+                      return fract(p.x * p.y * p.z * (p.x + p.y + p.z));
                     }
                     
-                    vec3 newTangent = normalize(posP1 - pos);
-                    vec3 newBitangent = normalize(posP2 - pos);
+                    float smootherstep(float edge0, float edge1, float x, float smoothness) {
+                      x = clamp((x - edge0) / (edge1 - edge0), 0.0, 1.0);
+                      return pow(x, smoothness) * (smoothness + 1.0) - pow(x, smoothness + 1.0) * smoothness;
+                    }
                     
-                    transformedNormal = normalize(cross(newTangent, newBitangent));
-                  }
-                  
-                  vNormal = normalMatrix * transformedNormal;
-                  vPosition = pos;
-                  
-                  vWorldPosition = (modelMatrix * vec4(pos, 1.0)).xyz;
-                  
-                  vec3 worldCameraPos = cameraPosition;
-                  vec3 worldViewDir = normalize(worldCameraPos - vWorldPosition);
-                  vViewDir = worldViewDir;
-                  
-                  vFresnel = fresnel(normalize((modelMatrix * vec4(transformedNormal, 0.0)).xyz), worldViewDir, uRimIntensity * (1.0 + pulse * 0.2));
-                  
-                  vElevation = length(pos);
-                  
-                  gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-                }
-              `;
+                    float contour(float val, float width, float sharpness) {
+                      float contourVal = abs(fract(val) - 0.5);
+                      return pow(smoothstep(0.0, width, contourVal), sharpness);
+                    }
+                    
+                    float fresnel(vec3 normal, vec3 viewDir, float power) {
+                      return pow(1.0 - abs(dot(normal, viewDir)), power);
+                    }
+                    
+                    float noise(vec3 p) {
+                      vec3 i = floor(p);
+                      vec3 f = fract(p);
+                      f = f*f*(3.0-2.0*f);
+                      
+                      float n = i.x + i.y*157.0 + 113.0*i.z;
+                      return mix(
+                        mix(mix(hash(n+0.0), hash(n+1.0), f.x),
+                            mix(hash(n+157.0), hash(n+158.0), f.x), f.y),
+                        mix(mix(hash(n+113.0), hash(n+114.0), f.x),
+                            mix(hash(n+270.0), hash(n+271.0), f.x), f.y), f.z);
+                    }
+                    
+                    float fbm(vec3 p, int octaves) {
+                      float value = 0.0;
+                      float amplitude = 0.5;
+                      float frequency = 1.0;
+                      
+                      for (int i = 0; i < octaves; i++) {
+                        value += amplitude * noise(p * frequency);
+                        amplitude *= 0.5;
+                        frequency *= 2.0;
+                        
+                        if (amplitude < 0.01) break;
+                      }
+                      
+                      return value;
+                    }
+                    
+                    vec3 mixColor(vec3 colorA, vec3 colorB, float t) {
+                      return mix(colorA, colorB, t);
+                    }
+                  `;
 
-              // Enhanced fragment shader with improved visual effects
-              const fragmentShader = `
-                ${helperFunctions}
-                
-                varying vec3 vNormal;
-                varying vec3 vViewDir;
-                varying vec3 vPosition;
-                varying vec3 vOrigPosition;
-                varying vec3 vWorldPosition;
-                varying float vFresnel;
-                varying float vElevation;
-                varying float vDistortion;
-                
-                uniform float uLineCount;
-                uniform float uLineWidth;
-                uniform float uLineSharpness;
-                uniform float uRimEffect;
-                uniform float uRimWidth;
-                uniform float uOffset;
-                uniform bool uUseHighlights;
-                uniform float uHighlightIntensity;
-                uniform float uOcclusion;
-                uniform float uScrollProgress;
-                uniform float uDistortion;
-                uniform float uTime;
-                uniform float uGlowIntensity;
-                uniform vec3 uGlowColor;
-                uniform float uColorShift;
-                uniform vec3 uLineColorA;
-                uniform vec3 uLineColorB;
-                
-                void main() {
-                  vec3 dir = normalize(vPosition);
-                  
-                  float elevation = vElevation;
-                  
-                  elevation += dot(normalize(vNormal), dir) * 0.05;
-                  
-                  float timeOffset = sin(uTime * 0.2) * 0.05;
-                  
-                  float rimFactor = vFresnel * uRimEffect;
-                  
-                  float gradient = 1.0 + pow(rimFactor, 2.0) * 5.0;
-                  
-                  float contourValue;
-                  
-                  if (uScrollProgress < 0.33) {
-                    contourValue = (elevation + uOffset + uScrollProgress + timeOffset) * uLineCount * mix(1.0, gradient, uRimWidth);
-                  } else if (uScrollProgress < 0.66) {
-                    float localProgress = (uScrollProgress - 0.33) * 3.0;
-                    float pulseEffect = 0.2 + 0.1 * sin(uTime * 0.5);
-                    vec3 localPos = vPosition * (1.0 + sin(localProgress * 6.28) * pulseEffect);
-                    contourValue = length(localPos.xz) * uLineCount * 2.0;
-                  } else {
-                    float localProgress = (uScrollProgress - 0.66) * 3.0;
-                    float noise1 = fbm(vPosition * 5.0 + vec3(uTime * 0.1, 0.0, uScrollProgress), 2);
-                    float noise2 = fbm(vPosition * 2.0 - vec3(0.0, uTime * 0.2, uScrollProgress * 3.0), 2);
-                    contourValue = (elevation * noise1 + noise2 * 2.0) * uLineCount;
-                  }
-                  
-                  float lineVal = 1.0 - contour(contourValue, uLineWidth, uLineSharpness);
-                  
-                  lineVal = mix(lineVal, step(uLineWidth * 2.0, abs(fract(contourValue) - 0.5)), rimFactor * 0.7);
-                  
-                  float colorMix = 0.5 + 0.5 * sin(vElevation * 5.0 + uTime * 0.3 + vDistortion * 2.0);
-                  colorMix = mix(colorMix, rimFactor, uColorShift);
-                  
-                  vec3 lineColor = mixColor(uLineColorA, uLineColorB, colorMix);
-                  
-                  vec3 color = lineColor * lineVal;
-                  
-                  if (uUseHighlights) {
-                    vec3 lightDir = normalize(vec3(
-                      sin(uScrollProgress * 6.28 + uTime * 0.2), 
-                      1.0, 
-                      cos(uScrollProgress * 6.28 + uTime * 0.2)
-                    ));
+                  // Enhanced vertex shader with improved deformations
+                  const vertexShader = `
+                    ${helperFunctions}
                     
-                    vec3 halfVector = normalize(lightDir + vViewDir);
-                    float specular = pow(max(0.0, dot(vNormal, halfVector)), 16.0);
+                    varying vec3 vNormal;
+                    varying vec3 vViewDir;
+                    varying vec3 vPosition;
+                    varying vec3 vOrigPosition;
+                    varying vec3 vWorldPosition;
+                    varying float vFresnel;
+                    varying float vElevation;
+                    varying float vDistortion;
                     
-                    color += vec3(specular) * lineVal * uHighlightIntensity;
+                    uniform float uRimEffect;
+                    uniform float uRimIntensity;
+                    uniform float uScrollProgress;
+                    uniform float uDistortion;
+                    uniform float uTwist;
+                    uniform float uTime;
+                    uniform float uPulseSpeed;
                     
-                    float ao = 1.0 - uOcclusion * (1.0 - dot(vNormal, vec3(0.0, 1.0, 0.0)));
-                    color *= ao;
-                  }
-                  
-                  color *= (0.98 + hash(vPosition * 1000.0) * 0.04);
-                  
-                  vec3 glowColor = uGlowColor * rimFactor * uGlowIntensity;
-                  color += glowColor;
-                  
-                  float alpha = lineVal * 0.8 + rimFactor * 0.2;
-                  
-                  gl_FragColor = vec4(color, alpha);
-                }
-              `;
+                    vec3 twist(vec3 p, float strength) {
+                      float c = cos(strength * p.y);
+                      float s = sin(strength * p.y);
+                      mat2 m = mat2(c, -s, s, c);
+                      return vec3(m * p.xz, p.y).xzy;
+                    }
+                    
+                    float pulseEffect(float time, float speed) {
+                      return 0.5 * sin(time * speed) + 0.5;
+                    }
+                    
+                    void main() {
+                      vOrigPosition = position;
+                      
+                      vec3 pos = position;
+                      
+                      float pulse = pulseEffect(uTime, uPulseSpeed);
+                      
+                      float twistAmount = uTwist * (1.0 + pulse * 0.1);
+                      pos = twist(pos, twistAmount);
+                      
+                      float distortionAmount = uDistortion;
+                      float noiseValue = 0.0;
+                      
+                      if (distortionAmount > 0.0) {
+                        noiseValue = fbm(pos * 3.0 + vec3(0.0, uTime * 0.1, uScrollProgress * 10.0), 3) * 2.0 - 1.0;
+                        pos += normal * noiseValue * distortionAmount;
+                        vDistortion = noiseValue * distortionAmount;
+                      } else {
+                        vDistortion = 0.0;
+                      }
+                      
+                      vec3 transformedNormal = normalize(normal);
+                      if (distortionAmount > 0.0 || twistAmount > 0.0) {
+                        float delta = 0.01;
+                        vec3 tangent = normalize(cross(normal, vec3(0.0, 1.0, 0.0)));
+                        vec3 bitangent = normalize(cross(normal, tangent));
+                        
+                        vec3 posP1 = position + tangent * delta;
+                        vec3 posP2 = position + bitangent * delta;
+                        
+                        if (twistAmount > 0.0) {
+                          posP1 = twist(posP1, twistAmount);
+                          posP2 = twist(posP2, twistAmount);
+                        }
+                        
+                        if (distortionAmount > 0.0) {
+                          float n1 = fbm(posP1 * 3.0 + vec3(0.0, uTime * 0.1, uScrollProgress * 10.0), 2) * 2.0 - 1.0;
+                          float n2 = fbm(posP2 * 3.0 + vec3(0.0, uTime * 0.1, uScrollProgress * 10.0), 2) * 2.0 - 1.0;
+                          posP1 += normal * n1 * distortionAmount;
+                          posP2 += normal * n2 * distortionAmount;
+                        }
+                        
+                        vec3 newTangent = normalize(posP1 - pos);
+                        vec3 newBitangent = normalize(posP2 - pos);
+                        
+                        transformedNormal = normalize(cross(newTangent, newBitangent));
+                      }
+                      
+                      vNormal = normalMatrix * transformedNormal;
+                      vPosition = pos;
+                      
+                      vWorldPosition = (modelMatrix * vec4(pos, 1.0)).xyz;
+                      
+                      vec3 worldCameraPos = cameraPosition;
+                      vec3 worldViewDir = normalize(worldCameraPos - vWorldPosition);
+                      vViewDir = worldViewDir;
+                      
+                      vFresnel = fresnel(normalize((modelMatrix * vec4(transformedNormal, 0.0)).xyz), worldViewDir, uRimIntensity * (1.0 + pulse * 0.2));
+                      
+                      vElevation = length(pos);
+                      
+                      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                    }
+                  `;
 
-              try {
+                  // Enhanced fragment shader with improved visual effects
+                  const fragmentShader = `
+                    ${helperFunctions}
+                    
+                    varying vec3 vNormal;
+                    varying vec3 vViewDir;
+                    varying vec3 vPosition;
+                    varying vec3 vOrigPosition;
+                    varying vec3 vWorldPosition;
+                    varying float vFresnel;
+                    varying float vElevation;
+                    varying float vDistortion;
+                    
+                    uniform float uLineCount;
+                    uniform float uLineWidth;
+                    uniform float uLineSharpness;
+                    uniform float uRimEffect;
+                    uniform float uRimWidth;
+                    uniform float uOffset;
+                    uniform bool uUseHighlights;
+                    uniform float uHighlightIntensity;
+                    uniform float uOcclusion;
+                    uniform float uScrollProgress;
+                    uniform float uDistortion;
+                    uniform float uTime;
+                    uniform float uGlowIntensity;
+                    uniform vec3 uGlowColor;
+                    uniform float uColorShift;
+                    uniform vec3 uLineColorA;
+                    uniform vec3 uLineColorB;
+                    
+                    void main() {
+                      vec3 dir = normalize(vPosition);
+                      
+                      float elevation = vElevation;
+                      
+                      elevation += dot(normalize(vNormal), dir) * 0.05;
+                      
+                      float timeOffset = sin(uTime * 0.2) * 0.05;
+                      
+                      float rimFactor = vFresnel * uRimEffect;
+                      
+                      float gradient = 1.0 + pow(rimFactor, 2.0) * 5.0;
+                      
+                      float contourValue;
+                      
+                      if (uScrollProgress < 0.33) {
+                        contourValue = (elevation + uOffset + uScrollProgress + timeOffset) * uLineCount * mix(1.0, gradient, uRimWidth);
+                      } else if (uScrollProgress < 0.66) {
+                        float localProgress = (uScrollProgress - 0.33) * 3.0;
+                        float pulseEffect = 0.2 + 0.1 * sin(uTime * 0.5);
+                        vec3 localPos = vPosition * (1.0 + sin(localProgress * 6.28) * pulseEffect);
+                        contourValue = length(localPos.xz) * uLineCount * 2.0;
+                      } else {
+                        float localProgress = (uScrollProgress - 0.66) * 3.0;
+                        float noise1 = fbm(vPosition * 5.0 + vec3(uTime * 0.1, 0.0, uScrollProgress), 2);
+                        float noise2 = fbm(vPosition * 2.0 - vec3(0.0, uTime * 0.2, uScrollProgress * 3.0), 2);
+                        contourValue = (elevation * noise1 + noise2 * 2.0) * uLineCount;
+                      }
+                      
+                      float lineVal = 1.0 - contour(contourValue, uLineWidth, uLineSharpness);
+                      
+                      lineVal = mix(lineVal, step(uLineWidth * 2.0, abs(fract(contourValue) - 0.5)), rimFactor * 0.7);
+                      
+                      float colorMix = 0.5 + 0.5 * sin(vElevation * 5.0 + uTime * 0.3 + vDistortion * 2.0);
+                      colorMix = mix(colorMix, rimFactor, uColorShift);
+                      
+                      vec3 lineColor = mixColor(uLineColorA, uLineColorB, colorMix);
+                      
+                      vec3 color = lineColor * lineVal;
+                      
+                      if (uUseHighlights) {
+                        vec3 lightDir = normalize(vec3(
+                          sin(uScrollProgress * 6.28 + uTime * 0.2), 
+                          1.0, 
+                          cos(uScrollProgress * 6.28 + uTime * 0.2)
+                        ));
+                        
+                        vec3 halfVector = normalize(lightDir + vViewDir);
+                        float specular = pow(max(0.0, dot(vNormal, halfVector)), 16.0);
+                        
+                        color += vec3(specular) * lineVal * uHighlightIntensity;
+                        
+                        float ao = 1.0 - uOcclusion * (1.0 - dot(vNormal, vec3(0.0, 1.0, 0.0)));
+                        color *= ao;
+                      }
+                      
+                      color *= (0.98 + hash(vPosition * 1000.0) * 0.04);
+                      
+                      vec3 glowColor = uGlowColor * rimFactor * uGlowIntensity;
+                      color += glowColor;
+                      
+                      float alpha = lineVal * 0.8 + rimFactor * 0.2;
+                      
+                      gl_FragColor = vec4(color, alpha);
+                    }
+                  `;
+
                   // Setup renderer with transparency
                   const canvas = document.querySelector("canvas.webgl");
                   if (!canvas) {
@@ -1534,6 +1571,11 @@
 
                   // Create enhanced scroll animations with GSAP
                   function setupScrollAnimations() {
+                    if (!hasScrollTrigger) {
+                        console.warn('ScrollTrigger not available');
+                        return;
+                    }
+
                     gsap.utils.toArray("section").forEach((section, i) => {
                       const heading = section.querySelector("h1");
                       const paragraph = section.querySelector("p");
@@ -1690,6 +1732,7 @@
 
                   // Start animation
                   animate();
+                  threeInitialized = true;
 
               } catch (error) {
                   console.error("Failed to initialize 3D visualization:", error);
@@ -1701,32 +1744,10 @@
               }
         }
 
-        // Initialize Three.js
-        initThreeJS();
-
         // Initialize elements
         const terminalLines = document.querySelectorAll(".terminal-line");
         const preloaderEl = document.getElementById("preloader");
         const contentEl = document.getElementById("content");
-
-        // Special characters for scramble effect
-        const specialChars = "▪";
-
-        // Store original text content for spans that will be scrambled
-        const originalTexts = {};
-        document
-          .querySelectorAll('.terminal-line span[data-scramble="true"]')
-          .forEach(function (span, index) {
-            const originalText = span.textContent;
-            originalTexts[index] = originalText;
-            span.setAttribute("data-original-text", originalText);
-            span.textContent = "";
-          });
-
-        // Set initial state - make sure terminal lines are initially hidden
-        gsap.set(".terminal-line", {
-          opacity: 0
-        });
 
         // Function to update progress bar
         function updateProgress(percent) {
@@ -1737,9 +1758,17 @@
           }
         }
 
-        // Terminal preloader animation
+        // Simple preloader animation without scramble plugin dependency
         function animateTerminalPreloader() {
           updateProgress(0);
+          
+          if (!hasGSAP) {
+              // If GSAP isn't loaded, just hide the preloader after a delay
+              setTimeout(() => {
+                  revealContent();
+              }, 2000);
+              return;
+          }
 
           const tl = gsap.timeline({
             onComplete: function () {
@@ -1747,7 +1776,7 @@
             }
           });
 
-          const totalDuration = 6;
+          const totalDuration = 4; // Reduced from 6
 
           const allLines = Array.from(document.querySelectorAll(".terminal-line"));
           allLines.sort((a, b) => {
@@ -1756,121 +1785,75 @@
             return aTop - bTop;
           });
 
-          const textRevealTl = gsap.timeline();
-
+          // Simple fade-in animation for terminal lines
           allLines.forEach((line, lineIndex) => {
             const baseOpacity = lineIndex % 2 === 0 ? 1 : 0.7;
             const timePoint = (lineIndex / allLines.length) * (totalDuration * 0.8);
 
-            textRevealTl.to(
+            tl.to(
               line,
               {
                 opacity: baseOpacity,
-                duration: 0.3
+                duration: 0.3,
+                ease: "power2.out"
               },
               timePoint
             );
-
-            const scrambleSpans = line.querySelectorAll('span[data-scramble="true"]');
-
-            scrambleSpans.forEach((span) => {
-              const originalText =
-                span.getAttribute("data-original-text") || span.textContent;
-
-              textRevealTl.to(
-                span,
-                {
-                  duration: 0.8,
-                  scrambleText: {
-                    text: originalText,
-                    chars: specialChars,
-                    revealDelay: 0,
-                    speed: 0.3
-                  },
-                  ease: "none"
-                },
-                timePoint + 0.1
-              );
-            });
           });
 
-          tl.add(textRevealTl, 0);
+          // Progress bar animation
+          tl.to("#progress-bar", {
+            width: "100%",
+            duration: totalDuration * 0.9,
+            ease: "linear",
+            onUpdate: function() {
+                const progress = Math.min(99, this.progress() * 100);
+                updateProgress(progress);
+            }
+          }, 0);
 
-          for (let i = 0; i < 3; i++) {
-            const randomTime = 1 + i * 1.5;
-            tl.add(function () {
-              const glitchTl = gsap.timeline();
-
-              const allScrambleSpans = document.querySelectorAll(
-                'span[data-scramble="true"]'
-              );
-              const randomSpans = [];
-
-              const numToGlitch = 3 + Math.floor(Math.random() * 3);
-              for (let j = 0; j < numToGlitch; j++) {
-                const randomIndex = Math.floor(
-                  Math.random() * allScrambleSpans.length
-                );
-                randomSpans.push(allScrambleSpans[randomIndex]);
-              }
-
-              randomSpans.forEach((span) => {
-                const text =
-                  span.textContent || span.getAttribute("data-original-text");
-
-                glitchTl.to(
-                  span,
-                  {
-                    duration: 0.2,
-                    scrambleText: {
-                      text: text,
-                      chars: specialChars,
-                      revealDelay: 0,
-                      speed: 0.1
-                    },
-                    ease: "none",
-                    repeat: 1
-                  },
-                  Math.random() * 0.5
-                );
-              });
-
-              return glitchTl;
-            }, randomTime);
-          }
-
-          const disappearTl = gsap.timeline();
-
-          disappearTl.to(allLines, {
+          // Fade out terminal lines
+          tl.to(allLines, {
             opacity: 0,
             duration: 0.2,
-            stagger: 0.1,
+            stagger: 0.05,
             ease: "power1.in"
-          });
+          }, totalDuration - 0.5);
 
-          tl.add(disappearTl, totalDuration - 1);
-
-          tl.eventCallback("onUpdate", function () {
-            const progress = Math.min(99, tl.progress() * 100);
-            updateProgress(progress);
-          });
-
-          tl.call(
-            function () {
-              updateProgress(100);
-            },
-            [],
-            totalDuration - 0.5
-          );
+          tl.call(function() {
+            updateProgress(100);
+          }, [], totalDuration - 0.3);
 
           return tl;
         }
 
+        // Failsafe timeout for preloader
+        const preloaderTimeout = setTimeout(() => {
+            console.warn('Preloader timeout reached, forcing reveal');
+            revealContent();
+        }, 6000); // 6 seconds maximum wait
+
         // Reveal content by transitioning the preloader out
         function revealContent() {
+          // Clear the failsafe timeout
+          clearTimeout(preloaderTimeout);
+
           const titleLines = document.querySelectorAll(
             ".quote-section .title-line span"
           );
+
+          if (!hasGSAP) {
+              // Simple CSS transition fallback
+              preloaderEl.classList.add('fade-out');
+              contentEl.style.opacity = '1';
+              contentEl.style.visibility = 'visible';
+              
+              setTimeout(() => {
+                  preloaderEl.style.display = 'none';
+                  initializeMenu();
+              }, 500);
+              return;
+          }
 
           const revealTl = gsap.timeline();
 
@@ -1896,45 +1879,36 @@
           revealTl.call(() => {
             const navLinks = document.querySelectorAll(".nav-link");
             navLinks.forEach((link) => {
-              // Use SplitText if available, otherwise use fallback
-              let splitLink;
-              if (typeof SplitText !== 'undefined') {
-                splitLink = new SplitText(link, {
-                  type: "chars",
-                  charsClass: "char",
-                  position: "relative",
-                  linesClass: "line",
-                  deepSlice: true,
-                  propIndex: true
-                });
-              } else {
-                splitLink = splitTextFallback(link);
-              }
-
+              // Always use fallback for text splitting
+              const splitLink = splitTextFallback(link);
               link._splitText = splitLink;
 
               link.addEventListener("mouseenter", () => {
-                gsap.to(splitLink.chars, {
-                  x: (i) => `${0.5 + i * 0.1}em`,
-                  duration: 0.64,
-                  ease: slideEase,
-                  stagger: {
-                    each: 0.015,
-                    from: "start"
-                  }
-                });
+                if (hasGSAP) {
+                    gsap.to(splitLink.chars, {
+                      x: (i) => `${0.5 + i * 0.1}em`,
+                      duration: 0.64,
+                      ease: slideEase,
+                      stagger: {
+                        each: 0.015,
+                        from: "start"
+                      }
+                    });
+                }
               });
 
               link.addEventListener("mouseleave", () => {
-                gsap.to(splitLink.chars, {
-                  x: 0,
-                  duration: 0.64,
-                  ease: slideEase,
-                  stagger: {
-                    each: 0.01,
-                    from: "end"
-                  }
-                });
+                if (hasGSAP) {
+                    gsap.to(splitLink.chars, {
+                      x: 0,
+                      duration: 0.64,
+                      ease: slideEase,
+                      stagger: {
+                        each: 0.01,
+                        from: "end"
+                      }
+                    });
+                }
               });
             });
             
@@ -1983,6 +1957,20 @@
           );
 
           let isAnimating = false;
+
+          if (!hasGSAP) {
+              // Simple menu toggle without animations
+              menuBtn.addEventListener("click", () => {
+                  overlay.style.clipPath = "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)";
+                  overlay.style.pointerEvents = "all";
+              });
+              
+              closeBtn.addEventListener("click", () => {
+                  overlay.style.clipPath = "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)";
+                  overlay.style.pointerEvents = "none";
+              });
+              return;
+          }
 
           gsap.set(overlay, {
             clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
@@ -2100,7 +2088,7 @@
 
           // Close menu function
           function closeMenu() {
-            if (isAnimating) return;
+                        if (isAnimating) return;
             isAnimating = true;
 
             const tl = gsap.timeline({
@@ -2216,38 +2204,110 @@
         }
 
         // Setup initial preloader state
-        gsap.set(preloaderEl, {
-          clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)"
-        });
+        if (hasGSAP) {
+            gsap.set(preloaderEl, {
+              clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)"
+            });
 
-        // Set initial state for title lines
-        const titleLines = document.querySelectorAll(
-          ".quote-section .title-line span"
-        );
-        gsap.set(titleLines, {
-          y: "100%"
-        });
+            // Set initial state for title lines
+            const titleLines = document.querySelectorAll(
+              ".quote-section .title-line span"
+            );
+            gsap.set(titleLines, {
+              y: "100%"
+            });
 
-        // Start terminal preloader animation
-        const terminalAnimation = animateTerminalPreloader();
+            // Set initial opacity for terminal lines
+            gsap.set(".terminal-line", {
+              opacity: 0
+            });
+        } else {
+            // Fallback styles
+            preloaderEl.style.clipPath = "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)";
+            const titleLines = document.querySelectorAll(
+              ".quote-section .title-line span"
+            );
+            titleLines.forEach(line => {
+                line.style.transform = "translateY(100%)";
+            });
+        }
 
-        // Initialize menu functionality
-        initializeMenu();
+        // Initialize on DOM ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializePage);
+        } else {
+            initializePage();
+        }
+
+        function initializePage() {
+            try {
+                // Check plugin support
+                const support = checkPluginSupport();
+                console.log('Initializing with support:', support);
+
+                // Initialize Three.js if available
+                initThreeJS();
+
+                // Start terminal preloader animation
+                const terminalAnimation = animateTerminalPreloader();
+
+                // Initialize menu functionality after content is revealed
+                // (this will be called from revealContent)
+
+            } catch (error) {
+                console.error('Initialization error:', error);
+                // Force reveal content on error
+                setTimeout(revealContent, 1000);
+            }
+        }
         
         // Add cleanup for better performance
         window.addEventListener('beforeunload', () => {
-            // Dispose of Three.js resources
-            if (globalRenderer) {
-                globalRenderer.dispose();
+            try {
+                // Dispose of Three.js resources
+                if (globalRenderer) {
+                    globalRenderer.dispose();
+                }
+                if (globalMaterial) {
+                    globalMaterial.dispose();
+                }
+                // Kill all GSAP animations if available
+                if (hasScrollTrigger) {
+                    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+                }
+                if (hasGSAP) {
+                    gsap.killTweensOf("*");
+                }
+            } catch (error) {
+                console.error('Cleanup error:', error);
             }
-            if (globalMaterial) {
-                globalMaterial.dispose();
+        });
+
+        // Add visibility change handler to pause animations when tab is not visible
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // Pause Three.js rendering if needed
+                if (globalRenderer) {
+                    // You might want to set a flag here to pause the animation loop
+                }
+            } else {
+                // Resume Three.js rendering if needed
             }
-            // Kill all GSAP animations
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-            gsap.killTweensOf("*");
+        });
+
+        // Error boundary for the entire script
+        window.addEventListener('error', function(event) {
+            console.error('Global error:', event.error);
+            // If preloader is still visible after an error, force reveal
+            if (preloaderEl && preloaderEl.style.display !== 'none') {
+                setTimeout(() => {
+                    if (preloaderEl.style.display !== 'none') {
+                        console.warn('Error detected, forcing content reveal');
+                        revealContent();
+                    }
+                }, 1000);
+            }
         });
     </script>
 </body>
 </html>
-
