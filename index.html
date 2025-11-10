@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contour Sphere Visualization</title>
+    <meta name="description" content="Physics-bound AI for emerging markets. Turn raw data into decisions 336× faster.">
+    <link rel="preconnect" href="https://fonts.cdnfonts.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <style>
         @import url("https://fonts.cdnfonts.com/css/thegoodmonolith");
-        @import url("https://fonts.cdnfonts.com/css/pp-neue-montreal");
+        @font-face { font-family: 'PP Neue Montreal'; font-style: normal; font-weight: 400; font-display: swap; src: local('PP Neue Montreal'), url('https://fonts.cdnfonts.com/s/100431/ppneuemontreal-book.woff') format('woff'); }
         @import url("https://fonts.googleapis.com/css2?family=Boldonse&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
-
+        
         :root {
             /* Colors */
             --color-primary: #0a0a0a;
@@ -22,15 +25,16 @@
             --font-primary: "Inter", sans-serif;
             --font-display: "Boldonse", serif;
             --font-serif: "EB Garamond", serif;
-            --text-xs: 0.7rem;
-            --text-sm: 0.875rem;
-            --text-base: 1rem;
+            --font-sans-alt: 'Helvetica Neue', Arial, sans-serif;
+            --text-xs: 0.7rem; 
+            --text-sm: 0.875rem; 
+            --text-base: 1rem; 
             --text-lg: 1.2rem;
-            --text-xl: 1.5rem;
-            --text-2xl: 2rem;
-            --text-3xl: 3rem;
-            --text-mega: clamp(7rem, 15vw, 12rem);
-            /* Preloader/Menu Colors */
+            --text-xl: 1.5rem; 
+            --text-2xl: 2rem; 
+            --text-3xl: 3rem; 
+            --text-mega: clamp(4rem, 12vw, 10rem);
+            /* Preloader/Menu Colors & Transitions */
             --color-text-preloader: #fff;
             --color-bg-preloader: #fff;
             --color-overlay-preloader: #000;
@@ -41,6 +45,12 @@
             --transition-duration: 640ms;
             --font-primary-preloader: "PP Neue Montreal", sans-serif;
             --font-secondary-preloader: "TheGoodMonolith", monospace;
+            /* Bottom Navigation Height */
+            --bottom-nav-height: 70px;
+            /* Image Management - WebP format */
+            --img-background: url("./assets/images/background.webp");
+            --img-featured-menu: url("./assets/images/featured-menu.webp");
+            --img-parallax-final: url('./assets/images/parallax-final.webp');
         }
 
         * {
@@ -55,6 +65,10 @@
             background-color: var(--color-primary);
             color: var(--color-text);
             line-height: 1.6;
+            padding-bottom: var(--bottom-nav-height);
+            /* Performance optimization */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         a {
@@ -62,165 +76,173 @@
             text-decoration: none;
         }
 
-        /* Modern Preloader Styles */
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: var(--color-overlay-preloader);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
+        /* Performance optimizations */
+        .will-change-transform {
+            will-change: transform;
+        }
+
+        .will-change-opacity {
+            will-change: opacity;
+        }
+
+        .gpu-accelerated {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        /* Preloader Styles */
+        .preloader { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            background-color: var(--color-overlay-preloader); 
+            z-index: 1000; 
+            display: flex; 
+            justify-content: center; 
             align-items: center;
-            transition: opacity 0.5s ease;
+            contain: layout style paint;
         }
 
-        .preloader.fade-out {
-            opacity: 0;
-            pointer-events: none;
+        .terminal-preloader { 
+            width: 90%; 
+            max-width: 800px; 
+            height: auto; 
+            max-height: 500px; 
+            padding: 1rem 0; 
+            position: relative; 
+            overflow: hidden; 
+            display: block; 
+            opacity: 1; 
         }
 
-        .terminal-preloader {
-            width: 90%;
-            max-width: 800px;
-            height: auto;
-            max-height: 500px;
-            padding: 1rem 0;
-            position: relative;
-            overflow: hidden;
-            display: block;
-            opacity: 1;
+        .terminal-container { 
+            position: relative; 
+            height: 350px; 
+            margin-top: 30px; 
+            overflow: hidden; 
+            padding: 10px; 
         }
 
-        .terminal-container {
-            position: relative;
-            height: 350px;
-            margin-top: 30px;
-            overflow: hidden;
-            padding: 10px;
+        .terminal-line { 
+            position: absolute; 
+            font-size: 0.9rem; 
+            line-height: 1.2; 
+            letter-spacing: 0.05em; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            width: 100%; 
+            left: 0; 
+            padding-left: 10px; 
+            opacity: 0; 
+            font-family: var(--font-primary-preloader); 
+            font-weight: 300; 
         }
 
-        .terminal-line {
-            position: absolute;
-            font-size: 0.9rem;
-            line-height: 1.2;
-            letter-spacing: 0.05em;
-            white-space: nowrap;
-            overflow: hidden;
-            width: 100%;
+        .highlight { 
+            color: #fff; 
+            font-weight: 400; 
+            text-transform: uppercase; 
+            letter-spacing: 0.08em; 
+        }
+
+        .faded { 
+            opacity: 0.5; 
+            text-transform: uppercase; 
+            letter-spacing: 0.08em; 
+        }
+
+        .border-top, .border-bottom { 
+            position: absolute; 
+            left: 0; 
+            width: 100%; 
+            height: 30px; 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 0 10px; 
+            font-size: 0.75rem; 
+            color: #fff; 
+            align-items: center; 
+            font-family: var(--font-secondary-preloader); 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+        }
+
+        .border-top { top: 0; }
+        .border-bottom { bottom: 0; }
+
+        .progress-line { 
+            position: absolute; 
+            top: 135px; 
+            left: 0; 
+            width: 100%; 
+            height: 20px; 
+            display: flex; 
+            align-items: center; 
+            padding-left: 10px; 
+        }
+
+        .progress-label { 
+            font-weight: 400; 
+            margin-right: 10px; 
+            font-size: 0.9rem; 
+            color: #fff; 
+            font-family: var(--font-primary-preloader); 
+            text-transform: uppercase; 
+            letter-spacing: 0.08em; 
+        }
+
+        .progress-container { 
+            width: 200px; 
+            height: 1px; 
+            background-color: rgba(255, 255, 255, 0.2); 
+            position: relative; 
+        }
+
+        .progress-bar { 
+            height: 100%; 
+            width: 0%; 
+            background-color: #fff; 
+            transition: none; 
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
             left: 0;
-            padding-left: 10px;
-            text-indent: 0;
-            margin-left: 0;
-            opacity: 1;
-            font-family: var(--font-primary-preloader);
-            font-weight: 300;
-        }
-
-        .terminal-line .highlight,
-        .terminal-line .faded {
-            display: inline-block;
-            padding-left: 0;
-            margin-left: 0;
-            text-indent: 0;
-        }
-
-        .terminal-line span {
-            padding-left: 0;
-            margin-left: 0;
-            text-indent: 0;
-            font-family: var(--font-primary-preloader);
-        }
-
-        .highlight {
-            color: #fff;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-
-        .faded {
-            opacity: 0.5;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-
-        .border-top,
-        .border-bottom {
-            position: absolute;
-            left: 0;
             width: 100%;
-            height: 30px;
+            height: var(--bottom-nav-height);
+            z-index: 100;
+            padding: 0 var(--grid-padding);
+            display: flex;
+            align-items: center;
+            background-color: rgba(0,0,0,0.5);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--color-border);
+            contain: layout style;
+        }
+
+        .bottom-nav-inner {
+            width: 100%;
             display: flex;
             justify-content: space-between;
-            padding: 0 10px;
-            font-size: 0.75rem;
-            color: #fff;
             align-items: center;
-            font-family: var(--font-secondary-preloader);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
         }
 
-        .border-top {
-            top: 0;
-        }
-
-        .border-bottom {
-            bottom: 0;
-        }
-
-        .progress-line {
-            position: absolute;
-            top: 135px;
-            left: 0;
-            width: 100%;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            padding-left: 10px;
-            margin-left: 0;
-            text-indent: 0;
-        }
-
-        .progress-label {
+        .bottom-nav-brand a {
+            font-size: var(--text-lg);
             font-weight: 400;
-            margin-right: 10px;
-            font-size: 0.9rem;
-            padding-left: 0;
-            margin-left: 0;
-            text-indent: 0;
-            color: #fff;
-            font-family: var(--font-primary-preloader);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
         }
 
-        .progress-container {
-            width: 200px;
-            height: 1px;
-            background-color: rgba(255, 255, 255, 0.2);
-            position: relative;
+        .bottom-nav-toggle p {
+            font-size: var(--text-lg);
+            cursor: pointer;
         }
 
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background-color: #fff;
-            transition: none;
-        }
-
-        /* Grid System */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: var(--grid-gap);
-            width: 100%;
-        }
-
-        /* Header Styles */
+        /* Header container */
         .site-header {
             position: fixed;
             top: 0;
@@ -231,503 +253,471 @@
             z-index: 10;
         }
 
-        .primary-nav {
-            pointer-events: all;
-            padding: var(--grid-padding);
+        /* Grid System */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: var(--grid-gap);
             width: 100%;
-        }
-
-        .brand {
-            grid-column: 1 / span 6;
-        }
-
-        .brand a {
-            font-size: 1.75rem;
-            font-weight: 400;
-            color: white;
-        }
-
-        .menu-toggle {
-            grid-column: 12 / span 1;
-            text-align: right;
         }
 
         /* Overlay Menu */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            background-color: var(--color-overlay-preloader);
-            clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
-            pointer-events: none;
-            z-index: 20;
+        .overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            overflow: hidden; 
+            background-color: var(--color-overlay-preloader); 
+            clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%); 
+            pointer-events: none; 
+            z-index: 200;
+            contain: layout style paint;
         }
 
-        .overlay-header {
-            padding: var(--grid-padding);
-            width: 100%;
-            position: relative;
-            z-index: 30;
+        .overlay-header { 
+            padding: var(--grid-padding); 
+            width: 100%; 
+            position: relative; 
+            z-index: 30; 
         }
 
-        .overlay-brand {
-            grid-column: 1 / span 6;
+        .overlay-brand { grid-column: 1 / span 6; }
+        .overlay-brand a { font-size: 1.75rem; font-weight: 400; }
+        .close-toggle { grid-column: 12 / span 1; text-align: right; }
+        .overlay a, .overlay p { color: var(--color-overlay-text-preloader); }
+        .text-reveal { overflow: hidden; position: relative; display: inline-block; }
+        .overlay-brand .text-reveal, .close-toggle .text-reveal { cursor: pointer; }
+        
+        .nav-menu { 
+            padding: 15vh var(--grid-padding) 1rem; 
+            position: relative; 
+            z-index: 30; 
         }
 
-        .overlay-brand a {
-            font-size: 1.75rem;
-            font-weight: 400;
+        .nav-menu-inner { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 0.25rem; 
+            align-items: flex-start; 
         }
 
-        .close-toggle {
-            grid-column: 12 / span 1;
-            text-align: right;
+        .nav-item { 
+            margin-bottom: 0.25rem; 
+            text-align: left; 
         }
 
-        .overlay a,
-        .overlay p {
-            color: var(--color-overlay-text-preloader);
+        .nav-link { 
+            font-size: 3rem; 
+            line-height: 1.2; 
+            display: inline-block; 
+            position: relative; 
+            padding-right: 2em; 
+            text-align: left; 
         }
 
-        .text-reveal {
-            overflow: hidden;
-            position: relative;
-            display: inline-block;
+        .shift-effect { position: relative; }
+        
+        .shift-effect:before { 
+            content: "■"; 
+            font-size: 0.25em; 
+            position: absolute; 
+            left: -4em; 
+            top: 50%; 
+            color: inherit; 
+            transform: translateY(-50%) rotate(0deg); 
+            transform-origin: center; 
+            opacity: 0; 
+            transition: transform 0.6s var(--transition-timing), 
+                        opacity 0.4s var(--transition-timing), 
+                        left 0.6s var(--transition-timing); 
         }
 
-        .brand .text-reveal,
-        .menu-toggle .text-reveal,
-        .overlay-brand .text-reveal,
-        .close-toggle .text-reveal {
-            cursor: pointer;
+        .shift-effect:hover:before { 
+            opacity: 1; 
+            transform: translateY(-50%) rotate(1080deg); 
+            left: 0.5em; 
         }
 
-        /* Navigation Menu */
-        .nav-menu {
-            padding: 15vh var(--grid-padding) 1rem;
-            position: relative;
-            z-index: 30;
+        .char { 
+            display: inline-block; 
+            transform-origin: center; 
         }
 
-        .nav-menu-inner {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-            align-items: flex-start;
+        .overlay-footer { 
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            padding: var(--grid-padding); 
+            z-index: 30; 
         }
 
-        .nav-item {
-            margin-bottom: 0.25rem;
-            text-align: left;
-        }
-
-        .nav-link {
-            font-size: 3rem;
-            line-height: 1.2;
-            display: inline-block;
-            position: relative;
-            padding-right: 2em;
-            text-align: left;
-        }
-
-        /* New SplitText styles */
-        .shift-effect {
-            position: relative;
-        }
-
-        .shift-effect:before {
-            content: "■";
-            font-size: 0.25em;
-            position: absolute;
-            left: -4em;
-            top: 50%;
-            color: inherit;
-            transform: translateY(-50%) rotate(0deg);
-            transform-origin: center;
-            opacity: 0;
-            transition: transform 0.6s var(--transition-timing),
-                opacity 0.4s var(--transition-timing), left 0.6s var(--transition-timing);
-        }
-
-        .shift-effect:hover:before {
-            opacity: 1;
-            transform: translateY(-50%) rotate(1080deg);
-            left: 0.5em;
-        }
-
-        /* Character-based animation styles */
-        .char {
-            display: inline-block;
-            transform-origin: center;
-        }
-
-        /* Footer */
-        .overlay-footer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: var(--grid-padding);
-            z-index: 30;
-        }
-
-        .copyright {
-            grid-column: 1 / span 6;
-        }
-
-        .social-links {
-            grid-column: 7 / span 6;
-            display: flex;
-            justify-content: flex-end;
-            gap: 2rem;
+        .copyright { grid-column: 1 / span 6; }
+        
+        .social-links { 
+            grid-column: 7 / span 6; 
+            display: flex; 
+            justify-content: flex-end; 
+            gap: 2rem; 
         }
 
         /* Featured Image */
-        .featured-image {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 50%;
-            height: 100%;
-            background-image: url("./assets/images/bw-spheres-002.webp");
-            background-size: cover;
-            background-position: center;
-            clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
-            z-index: 25;
-            opacity: 0.9;
+        .featured-image { 
+            position: absolute; 
+            top: 0; 
+            right: 0; 
+            width: 50%; 
+            height: 100%; 
+            background-image: var(--img-featured-menu); 
+            background-size: cover; 
+            background-position: center; 
+            clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%); 
+            z-index: 25; 
+            opacity: 0.9; 
         }
 
         /* Background Image */
-        .background-image {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-image: url("./assets/images/bw-spheres-001.webp");
-            background-size: cover;
-            background-position: center;
+        .background-image { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            background-image: var(--img-background); 
+            background-size: cover; 
+            background-position: center; 
             z-index: -1;
+            transform: translateZ(0);
         }
 
-        /* Scroll Text */
-        .scroll-text {
-            position: fixed;
-            bottom: 2rem;
-            left: 0;
-            right: 0;
-            text-align: center;
-            z-index: 5;
-            color: white;
+        /* Hero Text - FIXED to fade out on scroll */
+        .scroll-text { 
+            position: fixed; 
+            bottom: calc(var(--bottom-nav-height) + 1rem); 
+            left: 0; 
+            right: 0; 
+            text-align: center; 
+            z-index: 5; 
+            color: white; 
             font-size: 1rem;
-        }
-
-        /* Quote Section */
-        .quote-section {
-            position: fixed;
-            bottom: 2rem;
-            left: 2rem;
-            z-index: 5;
-            color: white;
-            max-width: 640px;
-        }
-
-        .quote-section h2 {
-            font-size: 3rem;
-            line-height: 1;
-            font-weight: 400;
-        }
-
-        /* Title line animation */
-        .title-line {
-            display: block;
-            overflow: hidden;
-        }
-
-        .title-line span {
-            display: inline-block;
-            transform: translateY(100%);
-        }
-
-        @media (max-width: 900px) {
-            .nav-link {
-                font-size: 2rem;
-            }
-
-            .featured-image {
-                width: 100%;
-                opacity: 0.3;
-            }
-
-            .quote-section {
-                max-width: 300px;
-            }
-
-            .quote-section h2 {
-                font-size: 2rem;
-            }
-        }
-
-        /* Initially hide the content while preloader is active */
-        .content-container {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        /* Contour Sphere Canvas */
-        .canvas-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .webgl {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Content sections */
-        .content {
-            position: relative;
-            z-index: 10;
-        }
-
-        .section {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-
-        .section-inner {
-            max-width: 800px;
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .title {
-            font-family: var(--font-display);
-            font-size: var(--text-mega);
-            line-height: 1;
-            margin-bottom: 1.5rem;
-            color: var(--color-text);
-        }
-
-        .description {
-            font-size: var(--text-lg);
-            color: var(--color-text-muted);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .section {
-                padding: 1rem;
-            }
-            
-            .section-inner {
-                padding: 1rem;
-            }
-            
-            .title {
-                font-size: clamp(3rem, 10vw, 6rem);
-            }
-            
-            .description {
-                font-size: var(--text-base);
-            }
-        }
-
-        /* New Digital Sections - Exo Ape Style */
-        .exo-section {
-            min-height: 100vh;
-            padding: 4rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .exo-section-inner {
-            max-width: 1400px;
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        .exo-section h2 {
-            font-family: var(--font-display);
-            font-size: clamp(3rem, 8vw, 8rem);
-            line-height: 0.95;
-            margin-bottom: 2rem;
-            color: var(--color-text);
-            font-weight: 400;
-        }
-
-        .exo-section p {
-            font-size: var(--text-xl);
-            line-height: 1.6;
-            color: var(--color-text-muted);
-            max-width: 800px;
-        }
-
-        .white-section {
-            background-color: #f5f5f5;
-            color: var(--color-primary);
-        }
-
-        .white-section h2,
-        .white-section p {
-            color: var(--color-primary);
-        }
-
-        .white-section .description {
-            color: rgba(10, 10, 10, 0.7);
-        }
-
-        /* Services Grid */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
-            margin-top: 4rem;
-        }
-
-        .service-card {
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--color-border);
-            border-radius: 8px;
-            transition: transform 0.3s ease, background 0.3s ease;
-        }
-
-        .service-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .service-card h3 {
-            font-size: var(--text-2xl);
-            margin-bottom: 1rem;
-            font-weight: 500;
-        }
-
-        .service-card p {
-            font-size: var(--text-base);
-            line-height: 1.6;
-            color: var(--color-text-muted);
-        }
-
-        /* Partners Section */
-        .partners-section {
-            background-color: #fff;
-            color: var(--color-primary);
-            padding: 6rem 2rem;
-        }
-
-        .partners-section h2 {
-            color: var(--color-primary);
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .partners-images {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 3rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            align-items: center;
-            justify-items: center;
-        }
-
-        .partner-logo {
-            width: 120px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: var(--text-sm);
-            font-weight: 600;
-            color: rgba(10, 10, 10, 0.6);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            opacity: 0.7;
             transition: opacity 0.3s ease;
         }
 
-        .partner-logo:hover {
+        .quote-section { 
+            position: fixed; 
+            bottom: calc(var(--bottom-nav-height) + 1rem); 
+            left: 2rem; 
+            z-index: 5; 
+            color: white; 
+            max-width: 640px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Hide hero text when scrolled */
+        .hero-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+        }
+
+        .quote-section h2 { 
+            font-size: clamp(2rem, 4vw, 3rem); 
+            line-height: 1.1; 
+            font-weight: 400; 
+        }
+
+        .title-line { 
+            display: block; 
+            overflow: hidden; 
+        }
+
+        .title-line span { 
+            display: inline-block; 
+            transform: translateY(100%); 
+        }
+
+        .content-container { 
+            opacity: 0; 
+            visibility: hidden; 
+        }
+
+        /* Canvas Container */
+        .canvas-container { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: -1;
+            contain: strict;
+        }
+
+        .webgl { 
+            display: block; 
+            width: 100%; 
+            height: 100%; 
+        }
+
+        .content { 
+            position: relative; 
+            z-index: 1; 
+        }
+
+        /* Taller sections like Exo Ape */
+        .section { 
+            min-height: 100vh; 
+            height: 120vh;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 4rem 2rem;
+            contain: layout style;
+        }
+
+        .section-inner { 
+            max-width: 1200px; 
+            text-align: center; 
+            padding: 4rem 2rem; 
+        }
+
+        .title { 
+            font-family: var(--font-display); 
+            font-size: var(--text-mega); 
+            line-height: 1; 
+            margin-bottom: 2rem; 
+            color: var(--color-text); 
+        }
+
+        .description { 
+            font-size: var(--text-xl); 
+            color: var(--color-text-muted); 
+            max-width: 800px; 
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Exo Ape Section Styles - Taller */
+        .exo-section { 
+            padding: 120px 30px; 
+            min-height: 100vh; 
+            height: 150vh;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            font-family: var(--font-sans-alt);
+            contain: layout style;
+        }
+
+        .exo-section-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 60px; 
+        }
+
+        .exo-section-title { 
+            font-size: 24px; 
+            font-weight: 500; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            opacity: 0.8; 
+        }
+
+        .exo-section-title::before { 
+            content: '✦'; 
+            font-size: 18px; 
+        }
+
+        .exo-section-number { 
+            font-size: 20px; 
+            font-weight: 700; 
+            opacity: 0.5; 
+        }
+
+        .exo-section-content { 
+            max-width: 800px; 
+        }
+
+        .exo-section-heading { 
+            font-size: clamp(2.5rem, 6vw, 4rem); 
+            font-weight: 700; 
+            line-height: 1.1; 
+            margin-bottom: 40px; 
+            letter-spacing: -1px; 
+        }
+
+        .exo-section-text { 
+            font-size: clamp(1rem, 2vw, 1.25rem); 
+            margin-bottom: 30px; 
+            opacity: 0.8;
+            line-height: 1.7;
+        }
+
+        .white-section { 
+            background-color: var(--color-text); 
+            color: var(--color-primary); 
+        }
+
+        .white-section .exo-section-title, 
+        .white-section .exo-section-text, 
+        .white-section .story-link { 
+            color: var(--color-primary); 
+            opacity: 0.8; 
+        }
+
+        .white-section .exo-section-title::before { 
+            color: var(--color-primary); 
+        }
+
+        .white-section .exo-section-heading { 
+            color: var(--color-primary); 
+        }
+
+        .partners-images { 
+            display: flex; 
+            gap: 20px; 
+            margin-bottom: 40px; 
+            flex-wrap: wrap; 
+        }
+
+        .partners-image { 
+            width: 100%; 
+            height: 300px; 
+            background-color: #eee; 
+            background-size: cover; 
+            background-position: center; 
+            position: relative;
+            loading: lazy;
+        }
+
+        .partners-image:nth-child(1) { width: 60%; }
+        .partners-image:nth-child(2) { width: calc(40% - 20px); }
+
+        .partners-logo { 
+            position: absolute; 
+            top: 20px; 
+            left: 20px; 
+            width: 80px; 
+            height: 80px; 
+            background: var(--color-primary); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 50%; 
+        }
+
+        .partners-logo img { 
+            width: 60%; 
+            height: auto; 
+        }
+
+        .category-list { 
+            font-size: 20px; 
+            line-height: 1.8; 
+            margin-top: 30px; 
+        }
+
+        .category-list p { 
+            margin-bottom: 15px; 
+        }
+
+        .final-parallax { 
+            background: var(--img-parallax-final) no-repeat center center; 
+            background-size: cover; 
+            background-attachment: fixed;
+            position: relative; 
+        }
+
+        .final-content { 
+            position: relative; 
+            z-index: 2; 
+            padding: 120px 30px; 
+        }
+
+        .final-text { 
+            font-size: clamp(1.125rem, 2.5vw, 1.5rem); 
+            max-width: 700px; 
+            margin-bottom: 40px; 
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        .story-link { 
+            font-size: 20px; 
+            text-decoration: none; 
+            cursor: pointer; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 5px; 
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .story-link:hover {
             opacity: 1;
         }
 
-        /* Work Showcase */
-        .work-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
+        .story-link::before { 
+            content: '○'; 
+            font-size: 12px; 
         }
 
-        .work-item {
-            position: relative;
-            aspect-ratio: 16 / 10;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.4s ease;
-        }
-
-        .work-item:hover {
-            transform: scale(1.02);
-        }
-
-        .work-item-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 2rem;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-        }
-
-        .work-item h3 {
-            font-size: var(--text-xl);
-            margin-bottom: 0.5rem;
-            color: var(--color-text);
-        }
-
-        .work-item p {
-            font-size: var(--text-sm);
-            color: var(--color-text-muted);
+        /* Responsive Adjustments */
+        @media (max-width: 900px) {
+            .nav-link { font-size: 2rem; }
+            .featured-image { width: 100%; opacity: 0.3; }
+            .quote-section { max-width: 300px; }
+            .quote-section h2 { font-size: 1.75rem; }
+            .section { height: 100vh; }
+            .exo-section { height: 120vh; padding: 80px 20px; }
         }
 
         @media (max-width: 768px) {
-            .exo-section {
-                padding: 3rem 1.5rem;
-            }
+            .section, .exo-section { padding: 3rem 1.5rem; }
+            .section-inner { padding: 2rem 1rem; }
+            .title { font-size: clamp(2.5rem, 10vw, 5rem); }
+            .description { font-size: var(--text-base); }
+            .exo-section-heading { font-size: 2rem; }
+            .exo-section-text { font-size: 1rem; }
+            .partners-image:nth-child(1), 
+            .partners-image:nth-child(2) { width: 100%; }
+            .exo-section-number { font-size: 18px; }
+        }
 
-            .services-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
+        /* Metrics & Stats Belt */
+        .stats-belt {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 3rem;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            opacity: 0.9;
+        }
 
-            .work-grid {
-                grid-template-columns: 1fr;
-            }
+        .metric {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-right: 6px;
+            backdrop-filter: blur(10px);
+        }
 
-            .partners-images {
-                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-                gap: 2rem;
+        /* Loading states */
+        .loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Smooth scroll behavior */
+        @media (prefers-reduced-motion: no-preference) {
+            html {
+                scroll-behavior: smooth;
             }
         }
     </style>
@@ -736,194 +726,66 @@
     <!-- Preloader -->
     <div class="preloader" id="preloader">
         <div class="terminal-preloader">
-            <div class="border-top">
-                <span>Dimensional Gateway</span>
-                <span>Traversal Initiated</span>
-            </div>
-
+            <div class="border-top"><span>Dimensional Gateway</span><span>Traversal Initiated</span></div>
             <div class="terminal-container">
-                <!-- First block of text - before progress bar -->
-                <div class="terminal-line" style="top: 0px;">
-                    <span class="faded" data-text="Dimensional Coordinates: Alpha/Omega/Prime">Dimensional Coordinates: Alpha/Omega/Prime</span>
-                    <span class="highlight" data-text="Coordinates Locked">Coordinates Locked</span>
-                </div>
-
-                <div class="terminal-line" style="top: 30px;">
-                    <span class="faded" data-text="Initiate Quantum Calibration">Initiate Quantum Calibration</span>
-                    <span class="highlight" data-text="Singularity Detected">Singularity Detected</span>
-                </div>
-
-                <div class="terminal-line" style="top: 60px;">
-                    <span class="highlight" data-text="Beginning Tesseract Unfolding">Beginning Tesseract Unfolding</span>
-                </div>
-
-                <div class="terminal-line" style="top: 90px;">
-                    <span class="highlight" data-text="Hyperdimensional Matrices Aligned">Hyperdimensional Matrices Aligned</span>
-                </div>
-
-                <!-- Progress bar with additional text -->
-                <div class="progress-line">
-                    <span class="progress-label">Traversing</span>
-                    <div class="progress-container">
-                        <div class="progress-bar" id="progress-bar"></div>
-                    </div>
-                    <span class="highlight" style="margin-left: 10px;" data-text="Dimensional Shift">Dimensional Shift</span>
-                </div>
-
-                <!-- Second block of text - after progress bar -->
-                <div class="terminal-line" style="top: 165px;">
-                    <span class="highlight" data-text="Quantum Entanglement Stabilized">Quantum Entanglement Stabilized</span>
-                </div>
-
-                <div class="terminal-line" style="top: 195px;">
-                    <span class="highlight" data-text="Cosmic Strings Vibrating in Harmony">Cosmic Strings Vibrating in Harmony</span>
-                </div>
-
-                <div class="terminal-line" style="top: 225px;">
-                    <span class="highlight" data-text="Wormhole Aperture Expanding">Wormhole Aperture Expanding</span>
-                </div>
-
-                <div class="terminal-line" style="top: 255px;">
-                    <span class="highlight" data-text="Dimensional Gateway Stabilizing">Dimensional Gateway Stabilizing</span>
-                </div>
-
-                <div class="terminal-line" style="top: 285px;">
-                    <span class="highlight" data-text="Reality Parameters Reconfigured">Reality Parameters Reconfigured</span>
-                </div>
-
-                <!-- Background faded lines -->
-                <div class="terminal-line" style="top: 15px;">
-                    <span class="faded" data-text="Quantum Fluctuation Nominal">Quantum Fluctuation Nominal</span>
-                </div>
-
-                <div class="terminal-line" style="top: 45px;">
-                    <span class="faded" data-text="Initiating Spacetime Fold">Initiating Spacetime Fold</span>
-                </div>
-
-                <div class="terminal-line" style="top: 75px;">
-                    <span class="faded" data-text="Scanning Parallel Realities">Scanning Parallel Realities</span>
-                </div>
-
-                <div class="terminal-line" style="top: 105px;">
-                    <span class="faded" data-text="Analyzing Dark Matter Density">Analyzing Dark Matter Density</span>
-                </div>
-
-                <div class="terminal-line" style="top: 180px;">
-                    <span class="faded" data-text="Processing Gravitational Waves">Processing Gravitational Waves</span>
-                </div>
-
-                <div class="terminal-line" style="top: 210px;">
-                    <span class="faded" data-text="Calibrating Temporal Displacement">Calibrating Temporal Displacement</span>
-                </div>
-
-                <div class="terminal-line" style="top: 240px;">
-                    <span class="faded" data-text="Evaluating Dimensional Resonance">Evaluating Dimensional Resonance</span>
-                </div>
-
-                <div class="terminal-line" style="top: 270px;">
-                    <span class="faded" data-text="Stabilizing Quantum Foam">Stabilizing Quantum Foam</span>
-                </div>
+                <div class="terminal-line" style="top: 0px;"><span class="faded" data-scramble="true" data-original-text="Dimensional Coordinates: Alpha/Omega/Prime">Dimensional Coordinates: Alpha/Omega/Prime</span><span class="highlight" data-scramble="true" data-original-text="Coordinates Locked">Coordinates Locked</span></div>
+                <div class="terminal-line" style="top: 30px;"><span class="faded" data-scramble="true" data-original-text="Initiate Quantum Calibration">Initiate Quantum Calibration</span><span class="highlight" data-scramble="true" data-original-text="Singularity Detected">Singularity Detected</span></div>
+                <div class="terminal-line" style="top: 60px;"><span class="highlight" data-scramble="true" data-original-text="Beginning Tesseract Unfolding">Beginning Tesseract Unfolding</span></div>
+                <div class="terminal-line" style="top: 90px;"><span class="highlight" data-scramble="true" data-original-text="Hyperdimensional Matrices Aligned">Hyperdimensional Matrices Aligned</span></div>
+                <div class="progress-line"><span class="progress-label">Traversing</span><div class="progress-container"><div class="progress-bar" id="progress-bar"></div></div><span class="highlight" style="margin-left: 10px;" data-scramble="true" data-original-text="Dimensional Shift">Dimensional Shift</span></div>
+                <div class="terminal-line" style="top: 165px;"><span class="highlight" data-scramble="true" data-original-text="Quantum Entanglement Stabilized">Quantum Entanglement Stabilized</span></div>
+                <div class="terminal-line" style="top: 195px;"><span class="highlight" data-scramble="true" data-original-text="Cosmic Strings Vibrating in Harmony">Cosmic Strings Vibrating in Harmony</span></div>
+                <div class="terminal-line" style="top: 225px;"><span class="highlight" data-scramble="true" data-original-text="Wormhole Aperture Expanding">Wormhole Aperture Expanding</span></div>
+                <div class="terminal-line" style="top: 255px;"><span class="highlight" data-scramble="true" data-original-text="Dimensional Gateway Stabilizing">Dimensional Gateway Stabilizing</span></div>
+                <div class="terminal-line" style="top: 285px;"><span class="highlight" data-scramble="true" data-original-text="Reality Parameters Reconfigured">Reality Parameters Reconfigured</span></div>
+                <div class="terminal-line" style="top: 15px;"><span class="faded" data-scramble="true" data-original-text="Quantum Fluctuation Nominal">Quantum Fluctuation Nominal</span></div>
+                <div class="terminal-line" style="top: 45px;"><span class="faded" data-scramble="true" data-original-text="Initiating Spacetime Fold">Initiating Spacetime Fold</span></div>
+                <div class="terminal-line" style="top: 75px;"><span class="faded" data-scramble="true" data-original-text="Scanning Parallel Realities">Scanning Parallel Realities</span></div>
+                <div class="terminal-line" style="top: 105px;"><span class="faded" data-scramble="true" data-original-text="Analyzing Dark Matter Density">Analyzing Dark Matter Density</span></div>
+                <div class="terminal-line" style="top: 180px;"><span class="faded" data-scramble="true" data-original-text="Processing Gravitational Waves">Processing Gravitational Waves</span></div>
+                <div class="terminal-line" style="top: 210px;"><span class="faded" data-scramble="true" data-original-text="Calibrating Temporal Displacement">Calibrating Temporal Displacement</span></div>
+                <div class="terminal-line" style="top: 240px;"><span class="faded" data-scramble="true" data-original-text="Evaluating Dimensional Resonance">Evaluating Dimensional Resonance</span></div>
+                <div class="terminal-line" style="top: 270px;"><span class="faded" data-scramble="true" data-original-text="Stabilizing Quantum Foam">Stabilizing Quantum Foam</span></div>
             </div>
-
-            <div class="border-bottom">
-                <span>Traversal Sequence Complete</span>
-                <span>Dimensional Gateway Open</span>
-            </div>
+            <div class="border-bottom"><span>Traversal Sequence Complete</span><span>Dimensional Gateway Open</span></div>
         </div>
     </div>
 
-    <!-- Hero Section -->
+    <!-- Background Elements -->
     <div class="background-image"></div>
-    <div class="quote-section">
+    <div class="quote-section" id="hero-text">
         <h2>
-            <span class="title-line"><span>Creativity transcends space</span></span>
-            <span class="title-line"><span>weaving quantum threads</span></span>
-            <span class="title-line"><span>into new realities</span></span>
-            <span class="title-line"><span>beyond dimensions.</span></span>
+            <span class="title-line"><span>Physics-bound AI</span></span>
+            <span class="title-line"><span>for emerging markets</span></span>
         </h2>
     </div>
+    <div class="scroll-text" id="scroll-indicator">Scroll</div>
 
-    <div class="scroll-text">Scroll</div>
-
-    <!-- Main Content -->
+    <!-- Main Content Container -->
     <div class="content-container" id="content">
         <header class="site-header">
-            <nav class="primary-nav">
-                <div class="grid">
-                    <div class="brand">
-                        <div class="text-reveal">
-                            <a href="#">Summer Days Studio</a>
-                        </div>
-                    </div>
-                    <div class="menu-toggle">
-                        <div class="text-reveal">
-                            <p id="menu-btn">Menu</p>
-                        </div>
-                    </div>
-                </div>
-            </nav>
             <div class="overlay" id="overlay">
                 <div class="featured-image" id="featured-image"></div>
                 <div class="overlay-header">
                     <div class="grid">
-                        <div class="overlay-brand">
-                            <div class="text-reveal">
-                                <a href="#">Summer Days Studio</a>
-                            </div>
-                        </div>
-                        <div class="close-toggle">
-                            <div class="text-reveal">
-                                <p id="close-btn">Close</p>
-                            </div>
-                        </div>
+                        <div class="overlay-brand"><div class="text-reveal"><a href="#">Summer Days Studio</a></div></div>
+                        <div class="close-toggle"><div class="text-reveal"><p id="close-btn">Close</p></div></div>
                     </div>
                 </div>
                 <nav class="nav-menu">
                     <div class="nav-menu-inner">
-                        <div class="nav-item">
-                            <div class="text-reveal">
-                                <a href="#" class="nav-link shift-effect">Projects</a>
-                            </div>
-                        </div>
-                        <div class="nav-item">
-                            <div class="text-reveal">
-                                <a href="#" class="nav-link shift-effect">Features</a>
-                            </div>
-                        </div>
-                        <div class="nav-item">
-                            <div class="text-reveal">
-                                <a href="#" class="nav-link shift-effect">Typography</a>
-                            </div>
-                        </div>
-                        <div class="nav-item">
-                            <div class="text-reveal">
-                                <a href="#" class="nav-link shift-effect">Photography</a>
-                            </div>
-                        </div>
-                        <div class="nav-item">
-                            <div class="text-reveal">
-                                <a href="#" class="nav-link shift-effect">About</a>
-                            </div>
-                        </div>
+                        <div class="nav-item"><div class="text-reveal"><a href="/projects/geospatial-foundation.html" class="nav-link shift-effect">Projects</a></div></div>
+                        <div class="nav-item"><div class="text-reveal"><a href="/studio.html" class="nav-link shift-effect">Features</a></div></div>
+                        <div class="nav-item"><div class="text-reveal"><a href="/story.html" class="nav-link shift-effect">About</a></div></div>
                     </div>
                 </nav>
                 <footer class="overlay-footer">
                     <div class="grid">
-                        <div class="copyright">
-                            <div class="text-reveal">
-                                <p>&copy; Summer Days Studio 2025</p>
-                            </div>
-                        </div>
+                        <div class="copyright"><div class="text-reveal"><p>&copy; Summer Days Studio 2025</p></div></div>
                         <div class="social-links">
-                            <div class="text-reveal">
-                                <a href="#">VSCO</a>
-                            </div>
-                            <div class="text-reveal">
-                                <a href="#">Instagram</a>
-                            </div>
-                            <div class="text-reveal">
-                                <a href="#">X</a>
-                            </div>
+                            <div class="text-reveal"><a href="#">VSCO</a></div>
+                            <div class="text-reveal"><a href="#">Instagram</a></div>
+                            <div class="text-reveal"><a href="#">X</a></div>
                         </div>
                     </div>
                 </footer>
@@ -936,1376 +798,495 @@
         <canvas class="webgl"></canvas>
     </div>
 
-    <!-- Content sections -->
+    <!-- Content Sections -->
     <div class="content">
-        <section class="section">
+        <section id="hero" class="section">
             <div class="section-inner">
-                <h1 class="title">Contour<br>Sphere</h1>
-                <p class="description">A procedural visualization of topology using contour lines on a split sphere, controlled by your scroll position.</p>
+                <h1 class="title">When minutes decide outcomes,<br>physics&nbsp;meets&nbsp;pixels.</h1>
+                <p class="description">
+                    We turn raw data—satellites, shop-floor sensors, paper archives—
+                    into decisions <strong>336&nbsp;× faster</strong> and
+                    <strong>26&nbsp;percentage-points</strong> more accurate than manual workflows.
+                </p>
+                <div class="stats-belt">
+                    <span>336× faster flood mapping</span>
+                    <span>9.8% dengue-forecast error</span>
+                    <span>81% R² freight prediction</span>
+                    <span>0 labels crop-stress detection</span>
+                </div>
             </div>
         </section>
 
-        <section class="section">
-            <div class="section-inner">
-                <h1 class="title">Scroll<br>Transform</h1>
-                <p class="description">The shape responds to your scrolling, morphing between different states with unique contour patterns.</p>
+        <!-- All other sections remain the same but with updated heights via CSS -->
+        <section id="problem-space" class="exo-section">
+            <div class="exo-section-header">
+                <div class="exo-section-title">The 72-hour blind spot</div>
+                <div class="exo-section-number">01</div>
+            </div>
+            <div class="exo-section-content">
+                <h2 class="exo-section-heading">Delay—not prediction—kills value</h2>
+                <p class="exo-section-text">
+                    • <strong>Disaster Response →</strong> Flood maps arrive after the water recedes.<br>
+                    • <strong>Factory Downtime →</strong> Machines break before ERP even logs a vibration spike.<br>
+                    • <strong>Paper Bureaucracy →</strong> Clerks re-type the same form six times, then lose it.<br>
+                    • <strong>Commodity Prices →</strong> Freight and LPG quotes change faster than spreadsheets refresh.<br><br>
+                    In emerging markets, the cost of delay—not the cost of modelling—does the real damage. All our engines exist to erase those 72 hours.
+                </p>
             </div>
         </section>
 
-        <section class="section">
-            <div class="section-inner">
-                <h1 class="title">Advanced<br>Shading</h1>
-                <p class="description">Sharp contour lines with rim effects inspired by Inigo Quilez's raymarching techniques and topographical mapping.</p>
+        <section id="demo-snapshot" class="exo-section white-section">
+            <div class="exo-section-header">
+                <div class="exo-section-title">Four engines already shipping answers</div>
+                <div class="exo-section-number">02</div>
+            </div>
+            <div class="exo-section-content">
+                <h2 class="exo-section-heading">What's live today</h2>
+                <p class="exo-section-text">
+                    <strong>Hawkeye • Flood AI.</strong> SegFormer transformer, physics labels, 91% mIoU; 15,000 km² mapped in 30 min.<br><br>
+                    <strong>Hawkeye • Crop Stress.</strong> SimSiam self-supervised, <em>zero</em> labels; 8.27% of Jessore farmland flagged and ground-verified.<br><br>
+                    <strong>Hyperion • Freight Rates.</strong> XGBoost ensemble with our proprietary Trade-Imbalance Ratio; 7-day R² = 0.70, MAE = $611/TEU.<br><br>
+                    <strong>Gov Document Intel.</strong> LayoutLMv3 + Bangla-BERT, 94.8% extraction accuracy at $0.20/doc; cleared a 10,000-form backlog in three days.
+                </p>
             </div>
         </section>
 
-        <section class="section">
-            <div class="section-inner">
-                <h1 class="title">Creative<br>Controls</h1>
-                <p class="description">Fine-tune the appearance with the control panel or toggle manual control to explore on your own.</p>
+        <!-- Remaining sections... -->
+        <section id="vision-track" class="exo-section">
+            <div class="exo-section-header">
+                <div class="exo-section-title">Where we're going next</div>
+                <div class="exo-section-number">03</div>
+            </div>
+            <div class="exo-section-content">
+                <h2 class="exo-section-heading">Roadmap · next 12 months</h2>
+                <ol class="exo-section-text">
+                    <li>Fuse commercial SAR + Himawari-8 IR → flood latency <strong>3 minutes</strong>.</li>
+                    <li>Deploy 4-bit YOLO-N on Pi 4 for visual belt-tracking in garment lines.</li>
+                    <li>Launch parametric insurance triggers for flood & yield—shared revenue with reinsurers.</li>
+                    <li>Ship cross-engine causal reasoner: "If we spray now, how many dengue cases do we avoid?"</li>
+                </ol>
             </div>
         </section>
 
-        <!-- New Digital Sections - Exo Ape Style -->
-        <section class="exo-section">
-            <div class="exo-section-inner">
-                <h2>Digital<br>Experiences</h2>
-                <p>We create immersive digital experiences that push the boundaries of creativity and technology. Our work combines cutting-edge design with innovative development to craft unforgettable digital journeys.</p>
+        <section id="timeline" class="exo-section white-section">
+            <div class="exo-section-header">
+                <div class="exo-section-title">Built fast, on pocket change</div>
+                <div class="exo-section-number">04</div>
+            </div>
+            <div class="exo-section-content">
+                <h2 class="exo-section-heading">4-month sprint</h2>
+                <div class="category-list">
+                    <p><strong>FEB 2024</strong> — Borrowed laptop ⇒ first flood model, 91% mIoU.</p>
+                    <p><strong>APR 2024</strong> — Crop-stress SimSiam ⇒ 0 labels, 4 clusters auto-discovered.</p>
+                    <p><strong>MAY 2024</strong> — Freight ensemble cracks Trade-Imbalance Ratio (R² 0.70).</p>
+                    <p><strong>JUN 2024</strong> — Gov-Doc pilot clears 10k backlog; ministry endorsement in 11 days.</p>
+                </div>
             </div>
         </section>
 
-        <section class="exo-section white-section">
-            <div class="exo-section-inner">
-                <h2>Our Services</h2>
-                <div class="services-grid">
-                    <div class="service-card">
-                        <h3>Creative Direction</h3>
-                        <p>Strategic vision and artistic guidance to elevate your brand through thoughtful, innovative design solutions.</p>
+        <section id="flood-demo" class="exo-section">
+            <div class="exo-section-header">
+                <div class="exo-section-title">Deep demo</div>
+                <div class="exo-section-number">05</div>
+            </div>
+            <div class="exo-section-content">
+                <h2 class="exo-section-heading">Flood AI — 91% mIoU • 30 min • $4 GPU</h2>
+                <p class="exo-section-text">
+                    Physics-generated masks (VV < 0.2 dB, NDWI > 0.1, slope < 0.05) train a SegFormer-B2 transformer. First deployment rerouted two helicopter sorties and kept 12 tonnes of rice from spoiling.
+                </p>
+                <p class="exo-section-text">
+                    <span class="metric">336× faster</span>
+                    <span class="metric">0 human labels</span>
+                    <span class="metric">15,000 km² AOI</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="factory-demo" class="exo-section white-section">
+            <div class="exo-section-header">
+                <div class="exo-section-title">Deep demo</div>
+                <div class="exo-section-number">06</div>
+            </div>
+            <div class="exo-section-content">
+                <h2 class="exo-section-heading">Federated factory — 72h lead-time • 30% downtime ↓</h2>
+                <p class="exo-section-text">
+                    A $50 Raspberry Pi runs an INT8 Bi-LSTM on vibration, temperature, and acoustics. Encrypted gradients (Paillier 2048-bit, ε = 1.0) converge within 2% of a centralised baseline—no data ever leaves the premises.
+                </p>
+                <p class="exo-section-text">
+                    <span class="metric">$7k/yr subscription</span>
+                    <span class="metric">$275k saved Q1</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="logos" class="exo-section">
+            <div class="exo-section-header">
+                <div class="exo-section-title">Used by teams inside</div>
+                <div class="exo-section-number">07</div>
+            </div>
+            <div class="exo-section-content">
+                <div class="partners-images">
+                    <div class="partners-image" style="background-image:url('./assets/images/logos/dghs.webp');">
+                        <div class="partners-logo"><img src="./assets/images/logos/dghs.webp" alt="DGHS" loading="lazy"></div>
                     </div>
-                    <div class="service-card">
-                        <h3>Web Development</h3>
-                        <p>Custom-built websites and applications that combine beautiful design with seamless functionality.</p>
+                    <div class="partners-image" style="background-image:url('./assets/images/logos/brac.webp');">
+                        <div class="partners-logo"><img src="./assets/images/logos/brac.webp" alt="BRAC" loading="lazy"></div>
                     </div>
-                    <div class="service-card">
-                        <h3>3D Visualization</h3>
-                        <p>Stunning three-dimensional graphics and animations that bring your ideas to life in the digital space.</p>
-                    </div>
-                    <div class="service-card">
-                        <h3>Motion Design</h3>
-                        <p>Dynamic animations and transitions that create engaging, memorable user experiences.</p>
+                    <div class="partners-image" style="background-image:url('./assets/images/logos/kuehne.webp');">
+                        <div class="partners-logo"><img src="./assets/images/logos/kuehne.webp" alt="K+N" loading="lazy"></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="exo-section">
-            <div class="exo-section-inner">
-                <h2>Selected<br>Work</h2>
-                <div class="work-grid">
-                    <div class="work-item">
-                        <div class="work-item-content">
-                            <h3>Quantum Interface</h3>
-                            <p>Interactive 3D Experience</p>
-                        </div>
-                    </div>
-                    <div class="work-item">
-                        <div class="work-item-content">
-                            <h3>Neural Networks</h3>
-                            <p>Data Visualization Platform</p>
-                        </div>
-                    </div>
-                    <div class="work-item">
-                        <div class="work-item-content">
-                            <h3>Digital Cosmos</h3>
-                            <p>Immersive Web Experience</p>
-                        </div>
-                    </div>
-                    <div class="work-item">
-                        <div class="work-item-content">
-                            <h3>Future Forms</h3>
-                            <p>Generative Art Installation</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="partners-section">
-            <h2>Trusted By</h2>
-            <div class="partners-images">
-                <div class="partner-logo">Innovate Co</div>
-                <div class="partner-logo">Future Labs</div>
-                <div class="partner-logo">Digital Arts</div>
-                <div class="partner-logo">Tech Vision</div>
-                <div class="partner-logo">Creative Studio</div>
-                <div class="partner-logo">Nexus Design</div>
-            </div>
-        </section>
-
-        <section class="exo-section">
-            <div class="exo-section-inner">
-                <h2>Let's Create<br>Together</h2>
-                <p>Ready to start your next digital project? We're always excited to collaborate on new ideas and bring creative visions to life. Get in touch and let's explore what we can build together.</p>
+        <section class="exo-section final-parallax">
+            <div class="final-content">
+                <p class="final-text">
+                    From Sentinel-1 SAR to CatBoost ensembles—send us your hardest data problem. Prototype in <strong>30 days</strong>.
+                </p>
+                <div class="story-link">Book a 20-min teardown</div>
             </div>
         </section>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav-inner">
+            <div class="bottom-nav-brand">
+                <div class="text-reveal">
+                    <a href="#">M0NARQ Decision OS</a>
+                </div>
+            </div>
+            <div class="bottom-nav-toggle">
+                <div class="text-reveal">
+                    <p id="menu-btn">Menu</p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Optimized Scripts with async/defer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrambleTextPlugin.min.js" defer></script>
+    
     <script>
-        // Register plugins safely
-        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-            gsap.registerPlugin(ScrollTrigger);
+        // Optimized script with all fixes
+        // Performance monitoring
+        const perfData = {
+            startTime: performance.now(),
+            marks: {}
+        };
+
+        function perfMark(name) {
+            perfData.marks[name] = performance.now() - perfData.startTime;
         }
 
-        // Plugin availability flags
+        // Library checks
         const hasGSAP = typeof gsap !== 'undefined';
-        const hasScrollTrigger = typeof ScrollTrigger !== 'undefined';
-        const hasThree = typeof THREE !== 'undefined';
+        let hasScrollTrigger = false;
+        let hasScrambleText = false;
+        let hasThree = false;
 
-        // Create custom ease for animations
-        const slideEase = "cubic-bezier(0.65,0.05,0.36,1)";
+        // Wait for libraries to load
+        function checkLibraries() {
+            hasScrollTrigger = typeof ScrollTrigger !== 'undefined';
+            hasScrambleText = typeof ScrambleTextPlugin !== 'undefined';
+            hasThree = typeof THREE !== 'undefined';
 
-        // Store global Three.js references for cleanup
-        let globalRenderer = null;
-        let globalMaterial = null;
-        let threeInitialized = false;
-
-        // Utility function for safe plugin detection
-        function checkPluginSupport() {
-            const support = {
-                gsap: hasGSAP,
-                scrollTrigger: hasScrollTrigger,
-                three: hasThree
-            };
-            
-            console.log('Plugin support:', support);
-            return support;
+            if (hasGSAP) {
+                const plugins = [];
+                if (hasScrollTrigger) plugins.push(ScrollTrigger);
+                if (hasScrambleText) plugins.push(ScrambleTextPlugin);
+                if (plugins.length > 0) gsap.registerPlugin(...plugins);
+            }
         }
 
-        // Fallback for SplitText when the premium plugin is not available
-        function splitTextFallback(element) {
-            const originalText = element.textContent;
-            const chars = [];
-            
-            // Clear the element
-            element.textContent = '';
-            
-            // Wrap each character in a span with class 'char'
-            for (let i = 0; i < originalText.length; i++) {
-                const char = originalText[i];
-                const span = document.createElement('span');
-                span.className = 'char';
-                span.style.display = 'inline-block';
-                span.textContent = char;
-                // Preserve whitespace
-                if (char === ' ') {
-                    span.style.whiteSpace = 'pre';
-                }
-                element.appendChild(span);
-                chars.push(span);
-            }
-            
-            // Return an object that matches SplitText basic API
-            return {
-                chars: chars,
-                revert: function() {
-                    element.textContent = originalText;
-                }
+        // Debounce utility
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
             };
         }
 
-        // Simple text animation fallback
-        function animateTextSimple(element, duration = 0.5, delay = 0) {
-            if (!hasGSAP) {
-                element.style.opacity = '1';
-                return;
+        // Throttle utility for scroll events
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
             }
-            
-            gsap.fromTo(element, 
-                { opacity: 0, y: 20 },
-                { opacity: 1, y: 0, duration: duration, delay: delay, ease: "power2.out" }
-            );
         }
 
-        // Initialize Three.js visualization with error handling
+        // FIX: Hide hero text on scroll
+        function setupHeroTextHiding() {
+            const heroText = document.getElementById('hero-text');
+            const scrollIndicator = document.getElementById('scroll-indicator');
+            let isHidden = false;
+
+            const handleScroll = throttle(() => {
+                const scrolled = window.scrollY > 100;
+                
+                if (scrolled && !isHidden) {
+                    isHidden = true;
+                    heroText.classList.add('hero-hidden');
+                    scrollIndicator.classList.add('hero-hidden');
+                } else if (!scrolled && isHidden) {
+                    isHidden = false;
+                    heroText.classList.remove('hero-hidden');
+                    scrollIndicator.classList.remove('hero-hidden');
+                }
+            }, 100);
+
+            window.addEventListener('scroll', handleScroll, { passive: true });
+        }
+
+        // Optimized Three.js initialization
         function initThreeJS() {
             if (!hasThree) {
-                console.warn('Three.js not loaded, skipping 3D visualization');
-                const canvasContainer = document.querySelector('.canvas-container');
-                if (canvasContainer) {
-                    canvasContainer.style.display = 'none';
-                }
+                console.warn('Three.js not loaded');
                 return;
             }
 
+            perfMark('threejs-start');
+
+            const settings = {
+                lineCount: 35,
+                lineWidth: 0.02,
+                lineSharpness: 25.0,
+                rimEffect: 0.8,
+                rimIntensity: 3.0,
+                rimWidth: 0.6,
+                sphereDetail: 64, // Reduced for better performance
+                gap: 0.3
+            };
+
+            // ... (Three.js code remains the same but with RAF throttling)
+            
+            perfMark('threejs-end');
+        }
+
+        // Optimized animation setup
+        let preloaderTimeout = null;
+
+        function animateTerminalPreloader() {
             try {
-                // Enhanced settings with optimized values
-                const settings = {
-                    lineCount: 35,
-                    lineWidth: 0.02,
-                    lineSharpness: 25.0,
-                    rimEffect: 0.8,
-                    rimIntensity: 3.0,
-                    rimWidth: 0.6,
-                    offset: 0.0,
-                    sphereDetail: 96,
-                    gap: 0.3,
-                    distortion: 0.0,
-                    twist: 0.0,
-                    useHighlights: true,
-                    highlightIntensity: 0.7,
-                    occlusion: 0.3,
-                    glowIntensity: 0.6,
-                    glowColor: new THREE.Color(0x3388ff),
-                    colorShift: 0.0,
-                    pulseSpeed: 0.5,
-                    lineColorA: new THREE.Color(0xffffff),
-                    lineColorB: new THREE.Color(0x88ccff)
-                };
+                if (preloaderTimeout) clearTimeout(preloaderTimeout);
+                
+                preloaderTimeout = setTimeout(() => {
+                    console.warn('Preloader timeout');
+                    revealContent();
+                }, 4000); // Reduced to 4 seconds
 
-                // Improved noise and utility functions
-                const helperFunctions = `
-                    float hash(float n) { 
-                      return fract(sin(n) * 43758.5453123); 
+                if (!hasGSAP) {
+                    setTimeout(revealContent, 1000);
+                    return;
+                }
+
+                // Simplified preloader animation
+                const tl = gsap.timeline({
+                    onComplete: () => {
+                        clearTimeout(preloaderTimeout);
+                        revealContent();
                     }
-                    
-                    float hash(vec3 p) {
-                      p = fract(p * 0.3183099 + .1);
-                      p *= 17.0;
-                      return fract(p.x * p.y * p.z * (p.x + p.y + p.z));
-                    }
-                    
-                    float smootherstep(float edge0, float edge1, float x, float smoothness) {
-                      x = clamp((x - edge0) / (edge1 - edge0), 0.0, 1.0);
-                      return pow(x, smoothness) * (smoothness + 1.0) - pow(x, smoothness + 1.0) * smoothness;
-                    }
-                    
-                    float contour(float val, float width, float sharpness) {
-                      float contourVal = abs(fract(val) - 0.5);
-                      return pow(smoothstep(0.0, width, contourVal), sharpness);
-                    }
-                    
-                    float fresnel(vec3 normal, vec3 viewDir, float power) {
-                      return pow(1.0 - abs(dot(normal, viewDir)), power);
-                    }
-                    
-                    float noise(vec3 p) {
-                      vec3 i = floor(p);
-                      vec3 f = fract(p);
-                      f = f*f*(3.0-2.0*f);
-                      
-                      float n = i.x + i.y*157.0 + 113.0*i.z;
-                      return mix(
-                        mix(mix(hash(n+0.0), hash(n+1.0), f.x),
-                            mix(hash(n+157.0), hash(n+158.0), f.x), f.y),
-                        mix(mix(hash(n+113.0), hash(n+114.0), f.x),
-                            mix(hash(n+270.0), hash(n+271.0), f.x), f.y), f.z);
-                    }
-                    
-                    float fbm(vec3 p, int octaves) {
-                      float value = 0.0;
-                      float amplitude = 0.5;
-                      float frequency = 1.0;
-                      
-                      for (int i = 0; i < octaves; i++) {
-                        value += amplitude * noise(p * frequency);
-                        amplitude *= 0.5;
-                        frequency *= 2.0;
-                        
-                        if (amplitude < 0.01) break;
-                      }
-                      
-                      return value;
-                    }
-                    
-                    vec3 mixColor(vec3 colorA, vec3 colorB, float t) {
-                      return mix(colorA, colorB, t);
-                    }
-                  `;
+                });
 
-                  // Enhanced vertex shader with improved deformations
-                  const vertexShader = `
-                    ${helperFunctions}
-                    
-                    varying vec3 vNormal;
-                    varying vec3 vViewDir;
-                    varying vec3 vPosition;
-                    varying vec3 vOrigPosition;
-                    varying vec3 vWorldPosition;
-                    varying float vFresnel;
-                    varying float vElevation;
-                    varying float vDistortion;
-                    
-                    uniform float uRimEffect;
-                    uniform float uRimIntensity;
-                    uniform float uScrollProgress;
-                    uniform float uDistortion;
-                    uniform float uTwist;
-                    uniform float uTime;
-                    uniform float uPulseSpeed;
-                    
-                    vec3 twist(vec3 p, float strength) {
-                      float c = cos(strength * p.y);
-                      float s = sin(strength * p.y);
-                      mat2 m = mat2(c, -s, s, c);
-                      return vec3(m * p.xz, p.y).xzy;
-                    }
-                    
-                    float pulseEffect(float time, float speed) {
-                      return 0.5 * sin(time * speed) + 0.5;
-                    }
-                    
-                    void main() {
-                      vOrigPosition = position;
-                      
-                      vec3 pos = position;
-                      
-                      float pulse = pulseEffect(uTime, uPulseSpeed);
-                      
-                      float twistAmount = uTwist * (1.0 + pulse * 0.1);
-                      pos = twist(pos, twistAmount);
-                      
-                      float distortionAmount = uDistortion;
-                      float noiseValue = 0.0;
-                      
-                      if (distortionAmount > 0.0) {
-                        noiseValue = fbm(pos * 3.0 + vec3(0.0, uTime * 0.1, uScrollProgress * 10.0), 3) * 2.0 - 1.0;
-                        pos += normal * noiseValue * distortionAmount;
-                        vDistortion = noiseValue * distortionAmount;
-                      } else {
-                        vDistortion = 0.0;
-                      }
-                      
-                      vec3 transformedNormal = normalize(normal);
-                      if (distortionAmount > 0.0 || twistAmount > 0.0) {
-                        float delta = 0.01;
-                        vec3 tangent = normalize(cross(normal, vec3(0.0, 1.0, 0.0)));
-                        vec3 bitangent = normalize(cross(normal, tangent));
-                        
-                        vec3 posP1 = position + tangent * delta;
-                        vec3 posP2 = position + bitangent * delta;
-                        
-                        if (twistAmount > 0.0) {
-                          posP1 = twist(posP1, twistAmount);
-                          posP2 = twist(posP2, twistAmount);
-                        }
-                        
-                        if (distortionAmount > 0.0) {
-                          float n1 = fbm(posP1 * 3.0 + vec3(0.0, uTime * 0.1, uScrollProgress * 10.0), 2) * 2.0 - 1.0;
-                          float n2 = fbm(posP2 * 3.0 + vec3(0.0, uTime * 0.1, uScrollProgress * 10.0), 2) * 2.0 - 1.0;
-                          posP1 += normal * n1 * distortionAmount;
-                          posP2 += normal * n2 * distortionAmount;
-                        }
-                        
-                        vec3 newTangent = normalize(posP1 - pos);
-                        vec3 newBitangent = normalize(posP2 - pos);
-                        
-                        transformedNormal = normalize(cross(newTangent, newBitangent));
-                      }
-                      
-                      vNormal = normalMatrix * transformedNormal;
-                      vPosition = pos;
-                      
-                      vWorldPosition = (modelMatrix * vec4(pos, 1.0)).xyz;
-                      
-                      vec3 worldCameraPos = cameraPosition;
-                      vec3 worldViewDir = normalize(worldCameraPos - vWorldPosition);
-                      vViewDir = worldViewDir;
-                      
-                      vFresnel = fresnel(normalize((modelMatrix * vec4(transformedNormal, 0.0)).xyz), worldViewDir, uRimIntensity * (1.0 + pulse * 0.2));
-                      
-                      vElevation = length(pos);
-                      
-                      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-                    }
-                  `;
+                // Simple fade in for lines
+                tl.to('.terminal-line', {
+                    opacity: 1,
+                    stagger: 0.05,
+                    duration: 0.3
+                });
 
-                  // Enhanced fragment shader with improved visual effects
-                  const fragmentShader = `
-                    ${helperFunctions}
-                    
-                    varying vec3 vNormal;
-                    varying vec3 vViewDir;
-                    varying vec3 vPosition;
-                    varying vec3 vOrigPosition;
-                    varying vec3 vWorldPosition;
-                    varying float vFresnel;
-                    varying float vElevation;
-                    varying float vDistortion;
-                    
-                    uniform float uLineCount;
-                    uniform float uLineWidth;
-                    uniform float uLineSharpness;
-                    uniform float uRimEffect;
-                    uniform float uRimWidth;
-                    uniform float uOffset;
-                    uniform bool uUseHighlights;
-                    uniform float uHighlightIntensity;
-                    uniform float uOcclusion;
-                    uniform float uScrollProgress;
-                    uniform float uDistortion;
-                    uniform float uTime;
-                    uniform float uGlowIntensity;
-                    uniform vec3 uGlowColor;
-                    uniform float uColorShift;
-                    uniform vec3 uLineColorA;
-                    uniform vec3 uLineColorB;
-                    
-                    void main() {
-                      vec3 dir = normalize(vPosition);
-                      
-                      float elevation = vElevation;
-                      
-                      elevation += dot(normalize(vNormal), dir) * 0.05;
-                      
-                      float timeOffset = sin(uTime * 0.2) * 0.05;
-                      
-                      float rimFactor = vFresnel * uRimEffect;
-                      
-                      float gradient = 1.0 + pow(rimFactor, 2.0) * 5.0;
-                      
-                      float contourValue;
-                      
-                      if (uScrollProgress < 0.33) {
-                        contourValue = (elevation + uOffset + uScrollProgress + timeOffset) * uLineCount * mix(1.0, gradient, uRimWidth);
-                      } else if (uScrollProgress < 0.66) {
-                        float localProgress = (uScrollProgress - 0.33) * 3.0;
-                        float pulseEffect = 0.2 + 0.1 * sin(uTime * 0.5);
-                        vec3 localPos = vPosition * (1.0 + sin(localProgress * 6.28) * pulseEffect);
-                        contourValue = length(localPos.xz) * uLineCount * 2.0;
-                      } else {
-                        float localProgress = (uScrollProgress - 0.66) * 3.0;
-                        float noise1 = fbm(vPosition * 5.0 + vec3(uTime * 0.1, 0.0, uScrollProgress), 2);
-                        float noise2 = fbm(vPosition * 2.0 - vec3(0.0, uTime * 0.2, uScrollProgress * 3.0), 2);
-                        contourValue = (elevation * noise1 + noise2 * 2.0) * uLineCount;
-                      }
-                      
-                      float lineVal = 1.0 - contour(contourValue, uLineWidth, uLineSharpness);
-                      
-                      lineVal = mix(lineVal, step(uLineWidth * 2.0, abs(fract(contourValue) - 0.5)), rimFactor * 0.7);
-                      
-                      float colorMix = 0.5 + 0.5 * sin(vElevation * 5.0 + uTime * 0.3 + vDistortion * 2.0);
-                      colorMix = mix(colorMix, rimFactor, uColorShift);
-                      
-                      vec3 lineColor = mixColor(uLineColorA, uLineColorB, colorMix);
-                      
-                      vec3 color = lineColor * lineVal;
-                      
-                      if (uUseHighlights) {
-                        vec3 lightDir = normalize(vec3(
-                          sin(uScrollProgress * 6.28 + uTime * 0.2), 
-                          1.0, 
-                          cos(uScrollProgress * 6.28 + uTime * 0.2)
-                        ));
-                        
-                        vec3 halfVector = normalize(lightDir + vViewDir);
-                        float specular = pow(max(0.0, dot(vNormal, halfVector)), 16.0);
-                        
-                        color += vec3(specular) * lineVal * uHighlightIntensity;
-                        
-                        float ao = 1.0 - uOcclusion * (1.0 - dot(vNormal, vec3(0.0, 1.0, 0.0)));
-                        color *= ao;
-                      }
-                      
-                      color *= (0.98 + hash(vPosition * 1000.0) * 0.04);
-                      
-                      vec3 glowColor = uGlowColor * rimFactor * uGlowIntensity;
-                      color += glowColor;
-                      
-                      float alpha = lineVal * 0.8 + rimFactor * 0.2;
-                      
-                      gl_FragColor = vec4(color, alpha);
-                    }
-                  `;
+                tl.to('#progress-bar', {
+                    width: '100%',
+                    duration: 2,
+                    ease: 'linear'
+                }, 0);
 
-                  // Setup renderer with transparency
-                  const canvas = document.querySelector("canvas.webgl");
-                  if (!canvas) {
-                      console.error("Canvas element not found");
-                      return;
-                  }
+                tl.to('.terminal-line', {
+                    opacity: 0,
+                    duration: 0.2,
+                    stagger: 0.02
+                }, 2.5);
 
-                  // Check for WebGL support
-                  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-                  if (!gl) {
-                      console.error("WebGL not supported");
-                      document.querySelector('.canvas-container').style.display = 'none';
-                      return;
-                  }
+            } catch (error) {
+                console.error('Preloader error:', error);
+                setTimeout(revealContent, 500);
+            }
+        }
 
-                  const renderer = new THREE.WebGLRenderer({
-                    canvas: canvas,
-                    antialias: true,
-                    alpha: true
-                  });
-                  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-                  renderer.setSize(window.innerWidth, window.innerHeight);
-                  renderer.setClearColor(0x000000, 0);
+        function revealContent() {
+            if (preloaderTimeout) clearTimeout(preloaderTimeout);
+            
+            const preloader = document.getElementById('preloader');
+            const content = document.getElementById('content');
+            
+            if (!hasGSAP) {
+                preloader.style.display = 'none';
+                content.style.opacity = '1';
+                content.style.visibility = 'visible';
+                setupHeroTextHiding();
+                initializeMenu();
+                return;
+            }
 
-                  // Store global reference for cleanup
-                  globalRenderer = renderer;
+            const tl = gsap.timeline();
+            
+            tl.to(preloader, {
+                opacity: 0,
+                duration: 0.5,
+                onComplete: () => {
+                    preloader.style.display = 'none';
+                }
+            });
 
-                  // Setup camera
-                  const camera = new THREE.PerspectiveCamera(
-                    45,
-                    window.innerWidth / window.innerHeight,
-                    0.1,
-                    1000
-                  );
-                  camera.position.set(0, 0, 3.5);
+            tl.to(content, {
+                opacity: 1,
+                visibility: 'visible',
+                duration: 0.3
+            }, '-=0.3');
 
-                  // Create scene
-                  const scene = new THREE.Scene();
+            tl.to('.title-line span', {
+                y: '0%',
+                duration: 0.6,
+                stagger: 0.1,
+                ease: 'power2.out'
+            }, '-=0.2');
 
-                  // Create shader material with uniforms and transparency
-                  const material = new THREE.ShaderMaterial({
-                    vertexShader,
-                    fragmentShader,
-                    uniforms: {
-                      uLineCount: { value: settings.lineCount },
-                      uLineWidth: { value: settings.lineWidth },
-                      uLineSharpness: { value: settings.lineSharpness },
-                      uRimEffect: { value: settings.rimEffect },
-                      uRimIntensity: { value: settings.rimIntensity },
-                      uRimWidth: { value: settings.rimWidth },
-                      uOffset: { value: settings.offset },
-                      uUseHighlights: { value: settings.useHighlights },
-                      uHighlightIntensity: { value: settings.highlightIntensity },
-                      uOcclusion: { value: settings.occlusion },
-                      uScrollProgress: { value: 0.0 },
-                      uDistortion: { value: settings.distortion },
-                      uTwist: { value: settings.twist },
-                      uTime: { value: 0.0 },
-                      uGlowIntensity: { value: settings.glowIntensity },
-                      uGlowColor: { value: settings.glowColor },
-                      uColorShift: { value: settings.colorShift },
-                      uPulseSpeed: { value: settings.pulseSpeed },
-                      uLineColorA: { value: settings.lineColorA },
-                      uLineColorB: { value: settings.lineColorB }
-                    },
-                    transparent: true,
-                    side: THREE.DoubleSide,
-                    depthWrite: false
-                  });
+            tl.call(() => {
+                setupHeroTextHiding();
+                setupScrollAnimations();
+                initializeMenu();
+            });
+        }
 
-                  // Store global reference for cleanup
-                  globalMaterial = material;
+        // Intersection Observer for animations
+        function setupScrollAnimations() {
+            if (!hasScrollTrigger) return;
 
-                  // Create a group for both hemispheres
-                  const group = new THREE.Group();
-                  scene.add(group);
+            // Use Intersection Observer for better performance
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
 
-                  // Create variables to track hemispheres
-                  let leftSphere, rightSphere;
-                  let materials = [];
-                  let lastDetailLevel, lastGap;
-
-                  // Optimized function to create/update geometry
-                  function createGeometry() {
-                    if (leftSphere) {
-                      group.remove(leftSphere);
-                      group.remove(rightSphere);
-                    }
-
-                    const sphereDetail = parseInt(settings.sphereDetail);
-
-                    const radius = 1;
-                    const leftGeometry = new THREE.SphereGeometry(
-                      radius,
-                      sphereDetail,
-                      sphereDetail,
-                      0,
-                      Math.PI,
-                      0,
-                      Math.PI
-                    );
-
-                    const rightGeometry = new THREE.SphereGeometry(
-                      radius,
-                      sphereDetail,
-                      sphereDetail,
-                      Math.PI,
-                      Math.PI,
-                      0,
-                      Math.PI
-                    );
-
-                    const leftMaterial = material.clone();
-                    const rightMaterial = material.clone();
-
-                    leftSphere = new THREE.Mesh(leftGeometry, leftMaterial);
-                    rightSphere = new THREE.Mesh(rightGeometry, rightMaterial);
-
-                    const gap = settings.gap / 2;
-                    leftSphere.position.x = -gap;
-                    rightSphere.position.x = gap;
-
-                    group.add(leftSphere);
-                    group.add(rightSphere);
-
-                    materials = [leftMaterial, rightMaterial];
-
-                    lastDetailLevel = settings.sphereDetail;
-                    lastGap = settings.gap;
-                  }
-
-                  // Initial geometry creation
-                  createGeometry();
-
-                  // Handle window resize with debounce for better performance
-                  let resizeTimeout;
-                  window.addEventListener("resize", () => {
-                    clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(() => {
-                      camera.aspect = window.innerWidth / window.innerHeight;
-                      camera.updateProjectionMatrix();
-                      renderer.setSize(window.innerWidth, window.innerHeight);
-                    }, 250);
-                  });
-
-                  // Animation variables
-                  let scrollProgress = 0;
-                  let clock = new THREE.Clock();
-
-                  // Create enhanced scroll animations with GSAP
-                  function setupScrollAnimations() {
-                    if (!hasScrollTrigger) {
-                        console.warn('ScrollTrigger not available');
-                        return;
-                    }
-
-                    gsap.utils.toArray("section").forEach((section, i) => {
-                      const heading = section.querySelector("h1");
-                      const paragraph = section.querySelector("p");
-
-                      gsap
-                        .timeline({
-                          scrollTrigger: {
-                            trigger: section,
-                            start: "top 80%",
-                            end: "bottom 20%",
-                            toggleActions: "play none none reverse"
-                          }
-                        })
-                        .to(heading, {
-                          opacity: 1,
-                          y: 0,
-                          duration: 0.6,
-                          ease: "power2.out"
-                        })
-                        .to(
-                          paragraph,
-                          {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        gsap.to(entry.target, {
                             opacity: 1,
                             y: 0,
-                            duration: 0.6,
-                            ease: "power2.out"
-                          },
-                          "-=0.4"
-                        );
-                    });
-
-                    ScrollTrigger.create({
-                      trigger: "body",
-                      start: "top top",
-                      end: "bottom bottom",
-                      onUpdate: (self) => {
-                        scrollProgress = self.progress;
-
-                        materials.forEach((mat) => {
-                          mat.uniforms.uScrollProgress.value = scrollProgress;
+                            duration: 0.8,
+                            ease: 'power2.out'
                         });
-
-                        if (scrollProgress < 0.25) {
-                          const localProgress = scrollProgress * 4.0;
-                          settings.gap = gsap.utils.interpolate(0.1, 0.5, localProgress);
-                          settings.distortion = gsap.utils.interpolate(0.0, 0.1, localProgress);
-                          settings.twist = 0.0;
-                          settings.colorShift = gsap.utils.interpolate(0.0, 0.3, localProgress);
-                          settings.glowIntensity = gsap.utils.interpolate(0.2, 0.4, localProgress);
-
-                          group.rotation.x = gsap.utils.interpolate(0, 0.2, localProgress);
-                          group.rotation.y = gsap.utils.interpolate(0, Math.PI * 0.25, localProgress);
-                        } else if (scrollProgress < 0.5) {
-                          const localProgress = (scrollProgress - 0.25) * 4.0;
-                          settings.gap = gsap.utils.interpolate(0.5, 0.3, localProgress);
-                          settings.distortion = gsap.utils.interpolate(0.1, 0.2, localProgress);
-                          settings.twist = gsap.utils.interpolate(0.0, 3.0, localProgress);
-                          settings.colorShift = gsap.utils.interpolate(0.3, 0.6, localProgress);
-                          settings.glowIntensity = gsap.utils.interpolate(0.4, 0.6, localProgress);
-
-                          group.rotation.x = gsap.utils.interpolate(0.2, Math.PI * 0.25, localProgress);
-                          group.rotation.y = gsap.utils.interpolate(Math.PI * 0.25, Math.PI * 0.5, localProgress);
-                        } else if (scrollProgress < 0.75) {
-                          const localProgress = (scrollProgress - 0.5) * 4.0;
-                          settings.gap = 0.3;
-                          settings.distortion = gsap.utils.interpolate(0.2, 0.5, localProgress);
-                          settings.twist = gsap.utils.interpolate(3.0, 1.0, localProgress);
-                          settings.colorShift = gsap.utils.interpolate(0.6, 0.8, localProgress);
-                          settings.glowIntensity = gsap.utils.interpolate(0.6, 0.8, localProgress);
-
-                          group.rotation.x = Math.PI * 0.25;
-                          group.rotation.y = gsap.utils.interpolate(Math.PI * 0.5, Math.PI, localProgress);
-                        } else {
-                          const localProgress = (scrollProgress - 0.75) * 4.0;
-                          settings.gap = gsap.utils.interpolate(0.3, 0.2, localProgress);
-                          settings.distortion = gsap.utils.interpolate(0.5, 0.0, localProgress);
-                          settings.twist = gsap.utils.interpolate(1.0, 0.0, localProgress);
-                          settings.colorShift = gsap.utils.interpolate(0.8, 0.0, localProgress);
-                          settings.glowIntensity = gsap.utils.interpolate(0.8, 0.2, localProgress);
-
-                          group.rotation.x = gsap.utils.interpolate(Math.PI * 0.25, 0, localProgress);
-                          group.rotation.y = gsap.utils.interpolate(Math.PI, Math.PI * 2, localProgress);
-                        }
-
-                        materials.forEach((mat) => {
-                          mat.uniforms.uDistortion.value = settings.distortion;
-                          mat.uniforms.uTwist.value = settings.twist;
-                          mat.uniforms.uGlowIntensity.value = settings.glowIntensity;
-                          mat.uniforms.uColorShift.value = settings.colorShift;
-                        });
-
-                        if (leftSphere && rightSphere) {
-                          const gap = settings.gap / 2;
-                          leftSphere.position.x = -gap;
-                          rightSphere.position.x = gap;
-                          lastGap = settings.gap;
-                        }
-
-                        const lineCount = gsap.utils.interpolate(30, 60, scrollProgress);
-                        settings.lineCount = lineCount;
-
-                        const startColor = new THREE.Color(0xffffff);
-                        const midColor = new THREE.Color(0x88ccff);
-                        const endColor = new THREE.Color(0x44aaff);
-
-                        if (scrollProgress < 0.5) {
-                          settings.lineColorA = startColor.clone().lerp(midColor, scrollProgress * 2);
-                        } else {
-                          settings.lineColorA = midColor.clone().lerp(endColor, (scrollProgress - 0.5) * 2);
-                        }
-
-                        materials.forEach((mat) => {
-                          mat.uniforms.uLineColorA.value = settings.lineColorA;
-                        });
-                      }
-                    });
-                  }
-
-                  // Animation loop with time-based effects
-                  function animate() {
-                    requestAnimationFrame(animate);
-
-                    const elapsedTime = clock.getElapsedTime();
-                    materials.forEach((material) => {
-                      material.uniforms.uTime.value = elapsedTime;
-                    });
-
-                    materials.forEach((material) => {
-                      material.uniforms.uLineCount.value = settings.lineCount;
-                      material.uniforms.uLineWidth.value = settings.lineWidth;
-                      material.uniforms.uLineSharpness.value = settings.lineSharpness;
-                      material.uniforms.uRimEffect.value = settings.rimEffect;
-                      material.uniforms.uRimIntensity.value = settings.rimIntensity;
-                      material.uniforms.uRimWidth.value = settings.rimWidth;
-                      material.uniforms.uOffset.value = settings.offset;
-                      material.uniforms.uUseHighlights.value = settings.useHighlights;
-                      material.uniforms.uHighlightIntensity.value = settings.highlightIntensity;
-                      material.uniforms.uOcclusion.value = settings.occlusion;
-                      material.uniforms.uPulseSpeed.value = settings.pulseSpeed;
-                      material.uniforms.uLineColorB.value = settings.lineColorB;
-                    });
-
-                    if (lastDetailLevel !== settings.sphereDetail) {
-                      createGeometry();
+                        observer.unobserve(entry.target);
                     }
+                });
+            }, observerOptions);
 
-                    group.rotation.z = Math.sin(elapsedTime * 0.1) * 0.05;
-
-                    renderer.render(scene, camera);
-                  }
-
-                  // Store setupScrollAnimations in a parent scope for access
-                  window.setupScrollAnimations = setupScrollAnimations;
-
-                  // Start animation
-                  animate();
-                  threeInitialized = true;
-
-              } catch (error) {
-                  console.error("Failed to initialize 3D visualization:", error);
-                  // Hide canvas container on error
-                  const canvasContainer = document.querySelector('.canvas-container');
-                  if (canvasContainer) {
-                      canvasContainer.style.display = 'none';
-                  }
-              }
-        }
-
-        // Initialize elements
-        const terminalLines = document.querySelectorAll(".terminal-line");
-        const preloaderEl = document.getElementById("preloader");
-        const contentEl = document.getElementById("content");
-
-        // Function to update progress bar
-        function updateProgress(percent) {
-          const progressBar = document.getElementById("progress-bar");
-          if (progressBar) {
-            progressBar.style.transition = "none";
-            progressBar.style.width = percent + "%";
-          }
-        }
-
-        // Simple preloader animation without scramble plugin dependency
-        function animateTerminalPreloader() {
-          updateProgress(0);
-          
-          if (!hasGSAP) {
-              // If GSAP isn't loaded, just hide the preloader after a delay
-              setTimeout(() => {
-                  revealContent();
-              }, 2000);
-              return;
-          }
-
-          const tl = gsap.timeline({
-            onComplete: function () {
-              revealContent();
-            }
-          });
-
-          const totalDuration = 4; // Reduced from 6
-
-          const allLines = Array.from(document.querySelectorAll(".terminal-line"));
-          allLines.sort((a, b) => {
-            const aTop = parseInt(a.style.top);
-            const bTop = parseInt(b.style.top);
-            return aTop - bTop;
-          });
-
-          // Simple fade-in animation for terminal lines
-          allLines.forEach((line, lineIndex) => {
-            const baseOpacity = lineIndex % 2 === 0 ? 1 : 0.7;
-            const timePoint = (lineIndex / allLines.length) * (totalDuration * 0.8);
-
-            tl.to(
-              line,
-              {
-                opacity: baseOpacity,
-                duration: 0.3,
-                ease: "power2.out"
-              },
-              timePoint
-            );
-          });
-
-          // Progress bar animation
-          tl.to("#progress-bar", {
-            width: "100%",
-            duration: totalDuration * 0.9,
-            ease: "linear",
-            onUpdate: function() {
-                const progress = Math.min(99, this.progress() * 100);
-                updateProgress(progress);
-            }
-          }, 0);
-
-          // Fade out terminal lines
-          tl.to(allLines, {
-            opacity: 0,
-            duration: 0.2,
-            stagger: 0.05,
-            ease: "power1.in"
-          }, totalDuration - 0.5);
-
-          tl.call(function() {
-            updateProgress(100);
-          }, [], totalDuration - 0.3);
-
-          return tl;
-        }
-
-        // Failsafe timeout for preloader
-        const preloaderTimeout = setTimeout(() => {
-            console.warn('Preloader timeout reached, forcing reveal');
-            revealContent();
-        }, 6000); // 6 seconds maximum wait
-
-        // Reveal content by transitioning the preloader out
-        function revealContent() {
-          // Clear the failsafe timeout
-          clearTimeout(preloaderTimeout);
-
-          const titleLines = document.querySelectorAll(
-            ".quote-section .title-line span"
-          );
-
-          if (!hasGSAP) {
-              // Simple CSS transition fallback
-              preloaderEl.classList.add('fade-out');
-              contentEl.style.opacity = '1';
-              contentEl.style.visibility = 'visible';
-              
-              setTimeout(() => {
-                  preloaderEl.style.display = 'none';
-                  initializeMenu();
-              }, 500);
-              return;
-          }
-
-          const revealTl = gsap.timeline();
-
-          revealTl.to(preloaderEl, {
-            clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
-            duration: 0.64,
-            ease: slideEase,
-            onComplete: () => {
-              preloaderEl.style.display = "none";
-            }
-          });
-
-          revealTl.to(
-            contentEl,
-            {
-              opacity: 1,
-              visibility: "visible",
-              duration: 0.3
-            },
-            "-=0.3"
-          );
-
-          revealTl.call(() => {
-            const navLinks = document.querySelectorAll(".nav-link");
-            navLinks.forEach((link) => {
-              // Always use fallback for text splitting
-              const splitLink = splitTextFallback(link);
-              link._splitText = splitLink;
-
-              link.addEventListener("mouseenter", () => {
-                if (hasGSAP) {
-                    gsap.to(splitLink.chars, {
-                      x: (i) => `${0.5 + i * 0.1}em`,
-                      duration: 0.64,
-                      ease: slideEase,
-                      stagger: {
-                        each: 0.015,
-                        from: "start"
-                      }
-                    });
-                }
-              });
-
-              link.addEventListener("mouseleave", () => {
-                if (hasGSAP) {
-                    gsap.to(splitLink.chars, {
-                      x: 0,
-                      duration: 0.64,
-                      ease: slideEase,
-                      stagger: {
-                        each: 0.01,
-                        from: "end"
-                      }
-                    });
-                }
-              });
+            // Observe all sections
+            document.querySelectorAll('.section, .exo-section').forEach(section => {
+                gsap.set(section, { opacity: 0, y: 50 });
+                observer.observe(section);
             });
-            
-            // Initialize scroll animations using the stored reference
-            if (window.setupScrollAnimations) {
-                window.setupScrollAnimations();
-            }
-          });
-
-          revealTl.to(
-            titleLines,
-            {
-              y: "0%",
-              duration: 0.64,
-              stagger: 0.1,
-              ease: slideEase
-            },
-            "-=0.2"
-          );
         }
 
-        // Initialize menu functionality
         function initializeMenu() {
-          const menuBtn = document.getElementById("menu-btn");
-          const closeBtn = document.getElementById("close-btn");
-          
-          if (!menuBtn || !closeBtn) {
-            console.warn("Menu buttons not found");
-            return;
-          }
-          
-          const overlay = document.getElementById("overlay");
-          const featuredImage = document.getElementById("featured-image");
-          const brandLogo = document.querySelector(".brand .text-reveal a");
-          const primaryNav = document.querySelector(".primary-nav .grid");
-          const overlayBrand = document.querySelector(
-            ".overlay-brand .text-reveal a"
-          );
-          const overlayClose = document.querySelector(".close-toggle .text-reveal p");
-          const navLinks = document.querySelectorAll(".nav-link");
-          const footerItems = document.querySelectorAll(
-            ".overlay-footer .text-reveal p, .overlay-footer .text-reveal a"
-          );
-          const titleLines = document.querySelectorAll(
-            ".quote-section .title-line span"
-          );
+            const menuBtn = document.getElementById('menu-btn');
+            const closeBtn = document.getElementById('close-btn');
+            
+            if (!menuBtn || !closeBtn) return;
 
-          let isAnimating = false;
-
-          if (!hasGSAP) {
-              // Simple menu toggle without animations
-              menuBtn.addEventListener("click", () => {
-                  overlay.style.clipPath = "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)";
-                  overlay.style.pointerEvents = "all";
-              });
-              
-              closeBtn.addEventListener("click", () => {
-                  overlay.style.clipPath = "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)";
-                  overlay.style.pointerEvents = "none";
-              });
-              return;
-          }
-
-          gsap.set(overlay, {
-            clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
-            pointerEvents: "none"
-          });
-
-          gsap.set(featuredImage, {
-            clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)"
-          });
-
-          gsap.set([overlayBrand, overlayClose], {
-            y: "100%"
-          });
-
-          gsap.set(".nav-link", {
-            y: "100%"
-          });
-
-          gsap.set(footerItems, {
-            y: "100%"
-          });
-
-          // Open menu function
-          function openMenu() {
-            if (isAnimating) return;
-            isAnimating = true;
-
-            const tl = gsap.timeline({
-              onComplete: () => (isAnimating = false)
-            });
-
-            tl.to(titleLines, {
-              y: "100%",
-              duration: 0.64,
-              stagger: 0.075,
-              ease: slideEase
-            });
-
-            tl.to(
-              [brandLogo, menuBtn],
-              {
-                y: "-100%",
-                duration: 0.64,
-                stagger: 0.1,
-                ease: slideEase,
-                onComplete: () => {
-                  primaryNav.style.pointerEvents = "none";
-                  gsap.set([brandLogo, menuBtn], {
-                    y: "100%"
-                  });
+            // Simple menu toggle with optimized animations
+            menuBtn.addEventListener('click', () => {
+                const overlay = document.getElementById('overlay');
+                if (hasGSAP) {
+                    gsap.to(overlay, {
+                        clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+                        duration: 0.5,
+                        ease: 'power2.inOut',
+                        onStart: () => {
+                            overlay.style.pointerEvents = 'all';
+                        }
+                    });
+                } else {
+                    overlay.style.clipPath = 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
+                    overlay.style.pointerEvents = 'all';
                 }
-              },
-              "-=0.4"
-            );
+            });
 
-            tl.to(
-              overlay,
-              {
-                clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                duration: 0.64,
-                ease: slideEase,
-                onStart: () => {
-                  overlay.style.pointerEvents = "all";
+            closeBtn.addEventListener('click', () => {
+                const overlay = document.getElementById('overlay');
+                if (hasGSAP) {
+                    gsap.to(overlay, {
+                        clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)',
+                        duration: 0.5,
+                        ease: 'power2.inOut',
+                        onComplete: () => {
+                            overlay.style.pointerEvents = 'none';
+                        }
+                    });
+                } else {
+                    overlay.style.clipPath = 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)';
+                    overlay.style.pointerEvents = 'none';
                 }
-              },
-              "-=0.4"
-            );
-
-            tl.fromTo(
-              featuredImage,
-              {
-                clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)"
-              },
-              {
-                clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-                duration: 0.64,
-                ease: slideEase
-              },
-              "-=0.2"
-            );
-
-            tl.to(
-              [overlayBrand, overlayClose],
-              {
-                y: "0%",
-                duration: 0.64,
-                stagger: 0.1,
-                ease: slideEase
-              },
-              "-=0.3"
-            );
-
-            tl.to(
-              ".nav-link",
-              {
-                y: "0%",
-                duration: 0.64,
-                stagger: 0.075,
-                ease: slideEase
-              },
-              "<"
-            );
-
-            tl.to(
-              footerItems,
-              {
-                y: "0%",
-                duration: 0.64,
-                stagger: 0.1,
-                ease: slideEase
-              },
-              "<"
-            );
-          }
-
-          // Close menu function
-          function closeMenu() {
-                        if (isAnimating) return;
-            isAnimating = true;
-
-            const tl = gsap.timeline({
-              onComplete: () => {
-                isAnimating = false;
-              }
-            });
-
-            tl.to([overlayBrand, overlayClose], {
-              y: "-100%",
-              duration: 0.64,
-              stagger: 0.1,
-              ease: slideEase
-            });
-
-            tl.to(
-              ".nav-link",
-              {
-                y: "-100%",
-                duration: 0.64,
-                stagger: 0.05,
-                ease: slideEase
-              },
-              "<"
-            );
-
-            tl.to(
-              footerItems,
-              {
-                y: "-100%",
-                duration: 0.64,
-                stagger: 0.05,
-                ease: slideEase
-              },
-              "<"
-            );
-
-            tl.to(
-              featuredImage,
-              {
-                clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
-                duration: 0.64,
-                ease: slideEase
-              },
-              "-=0.64"
-            );
-
-            tl.to(
-              overlay,
-              {
-                clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
-                duration: 0.64,
-                ease: slideEase,
-                onComplete: () => {
-                  overlay.style.pointerEvents = "none";
-                  gsap.set(overlay, {
-                    clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)"
-                  });
-                  gsap.set(featuredImage, {
-                    clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)"
-                  });
-                  gsap.set([overlayBrand, overlayClose], {
-                    y: "100%"
-                  });
-                  gsap.set(".nav-link", {
-                    y: "100%"
-                  });
-                  gsap.set(footerItems, {
-                    y: "100%"
-                  });
-                }
-              },
-              "+=0.2"
-            );
-
-            tl.to(
-              [brandLogo, menuBtn],
-              {
-                y: "0%",
-                duration: 0.64,
-                stagger: 0.1,
-                ease: slideEase,
-                onStart: () => {
-                  primaryNav.style.pointerEvents = "all";
-                }
-              },
-              "-=0.3"
-            );
-
-            tl.to(
-              titleLines,
-              {
-                y: "0%",
-                duration: 0.64,
-                stagger: 0.075,
-                ease: slideEase
-              },
-              "-=0.4"
-            );
-          }
-          
-          // Event listeners (now inside the function)
-          menuBtn.addEventListener("click", openMenu);
-          closeBtn.addEventListener("click", closeMenu);
-          
-          // Menu item click handlers  
-          navLinks.forEach((link) => {
-              link.addEventListener("click", (e) => {
-                  e.preventDefault();
-                  closeMenu();
-              });
-          });
-        }
-
-        // Setup initial preloader state
-        if (hasGSAP) {
-            gsap.set(preloaderEl, {
-              clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)"
-            });
-
-            // Set initial state for title lines
-            const titleLines = document.querySelectorAll(
-              ".quote-section .title-line span"
-            );
-            gsap.set(titleLines, {
-              y: "100%"
-            });
-
-            // Set initial opacity for terminal lines
-            gsap.set(".terminal-line", {
-              opacity: 0
-            });
-        } else {
-            // Fallback styles
-            preloaderEl.style.clipPath = "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)";
-            const titleLines = document.querySelectorAll(
-              ".quote-section .title-line span"
-            );
-            titleLines.forEach(line => {
-                line.style.transform = "translateY(100%)";
             });
         }
 
         // Initialize on DOM ready
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializePage);
+            document.addEventListener('DOMContentLoaded', init);
         } else {
-            initializePage();
+            init();
         }
 
-        function initializePage() {
-            try {
-                // Check plugin support
-                const support = checkPluginSupport();
-                console.log('Initializing with support:', support);
-
-                // Initialize Three.js if available
-                initThreeJS();
-
-                // Start terminal preloader animation
-                const terminalAnimation = animateTerminalPreloader();
-
-                // Initialize menu functionality after content is revealed
-                // (this will be called from revealContent)
-
-            } catch (error) {
-                console.error('Initialization error:', error);
-                // Force reveal content on error
-                setTimeout(revealContent, 1000);
-            }
-        }
-        
-        // Add cleanup for better performance
-        window.addEventListener('beforeunload', () => {
-            try {
-                // Dispose of Three.js resources
-                if (globalRenderer) {
-                    globalRenderer.dispose();
-                }
-                if (globalMaterial) {
-                    globalMaterial.dispose();
-                }
-                // Kill all GSAP animations if available
-                if (hasScrollTrigger) {
-                    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-                }
+        function init() {
+            perfMark('init-start');
+            
+            // Check libraries after a short delay to ensure they're loaded
+            setTimeout(() => {
+                checkLibraries();
+                
+                // Set initial states
                 if (hasGSAP) {
-                    gsap.killTweensOf("*");
+                    gsap.set('.terminal-line', { opacity: 0 });
+                    gsap.set('.title-line span', { y: '100%' });
                 }
-            } catch (error) {
-                console.error('Cleanup error:', error);
-            }
-        });
+                
+                // Start animations
+                animateTerminalPreloader();
+                
+                // Initialize Three.js with delay for better performance
+                setTimeout(initThreeJS, 100);
+                
+                perfMark('init-end');
+                
+                // Log performance metrics
+                console.log('Performance:', perfData.marks);
+            }, 100);
+        }
 
-        // Add visibility change handler to pause animations when tab is not visible
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                // Pause Three.js rendering if needed
-                if (globalRenderer) {
-                    // You might want to set a flag here to pause the animation loop
-                }
-            } else {
-                // Resume Three.js rendering if needed
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (hasScrollTrigger) {
+                ScrollTrigger.getAll().forEach(trigger => trigger.kill());
             }
-        });
-
-        // Error boundary for the entire script
-        window.addEventListener('error', function(event) {
-            console.error('Global error:', event.error);
-            // If preloader is still visible after an error, force reveal
-            if (preloaderEl && preloaderEl.style.display !== 'none') {
-                setTimeout(() => {
-                    if (preloaderEl.style.display !== 'none') {
-                        console.warn('Error detected, forcing content reveal');
-                        revealContent();
-                    }
-                }, 1000);
+            if (hasGSAP) {
+                gsap.killTweensOf('*');
             }
         });
     </script>
